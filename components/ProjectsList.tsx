@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, TouchableOpacity } from "react-native";
 
 import Colors from "../constants/Colors";
+import DeleteProject from "./DeleteProject";
 import { MonoText } from "./StyledText";
 import { Text, View } from "./Themed";
 
@@ -20,9 +21,6 @@ export default function ProjectsList() {
       })
       .catch(function (error) {
         console.log(error);
-      })
-      .then(function () {
-        // always executed
       });
   }, []);
 
@@ -49,9 +47,12 @@ export default function ProjectsList() {
         >
           {projects.map((project: any) => {
             return (
-              <MonoText style={[styles.projectsListItem]}>
-                {`id: ${project.id}, author: ${project.author}, title: ${project.title}, file name: ${project.internal_filename} `}
-              </MonoText>
+              <>
+                <MonoText style={[styles.projectsListItem]}>
+                  {`id: ${project.id}, author: ${project.author}, title: ${project.title}, file name: ${project.internal_filename} `}
+                </MonoText>
+                <DeleteProject id={project.id}></DeleteProject>
+              </>
             );
           })}
         </ScrollView>

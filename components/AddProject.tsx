@@ -1,6 +1,7 @@
 import axios from "axios";
 import * as WebBrowser from "expo-web-browser";
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { useRef, useState } from "react";
+import { StyleSheet, Switch, TextInput, TouchableOpacity } from "react-native";
 
 import Colors from "../constants/Colors";
 import { MonoText } from "./StyledText";
@@ -10,16 +11,42 @@ export default function AddProject({ path }: { path: string }) {
   const USERNAME = "fesz";
   const PASSWORD = "admin";
 
+  const titleRef = useRef<TextInput>(null);
+  const authorRef = useRef<TextInput>(null);
+  const dateRef = useRef<TextInput>(null);
+  const isDiplomaRef = useRef<Switch>(null);
+  const categoryRef = useRef<TextInput>(null);
+
+  const [title, setTitle] = useState("");
+  const [author, setAuthor] = useState("");
+  const [date, setDate] = useState(0);
+  const [isDiploma, setIsDiploma] = useState(false);
+  const toggleIsDiploma = () => setIsDiploma((previousState) => !previousState);
+  const [category, setCategory] = useState("");
+
+  console.log("state", title, author, isDiploma);
+
   const handleFormSubmit = () => {
+    // const data = {
+    //   id: 3,
+    //   title: "JS_TEST2",
+    //   author: "Damian",
+    //   date: 2022,
+    //   academic_year: 2022,
+    //   is_diploma: false,
+    //   category: "application",
+    //   files_names: "",
+    // };
+
     const data = {
-      id: 3,
-      title: "JS_TEST2",
-      author: "Damian",
-      date: 2022,
-      academic_year: 2022,
-      is_diploma: false,
-      category: "application",
-      files_names: "",
+      id: 1,
+      title: title,
+      author: author,
+      date: date,
+      academic_year: date,
+      is_diploma: isDiploma,
+      category: category,
+      // files_names: "",
     };
 
     const formData = new FormData();
@@ -55,45 +82,127 @@ export default function AddProject({ path }: { path: string }) {
 
   return (
     <View>
-      <View style={styles.getStartedContainer}>
-        <Text
-          style={styles.getStartedText}
-          lightColor="rgba(0,0,0,0.8)"
-          darkColor="rgba(255,255,255,0.8)"
-        >
-          Podaj informacje o projekcie:
-        </Text>
-
-        <form
-          id="uploadForm"
-          action="http://localhost:5555/admin/add_mp"
-          role="form"
-          method="post"
-        >
+      <form
+        id="uploadForm"
+        action="http://localhost:5555/admin/add_mp"
+        role="form"
+        method="post"
+      >
+        <View style={styles.form}>
           <Text
-            style={styles.getStartedText}
+            style={styles.formLine}
             lightColor="rgba(0,0,0,0.8)"
             darkColor="rgba(255,255,255,0.8)"
           >
-            <label for="file">Plik Projektu: </label>
+            <label htmlFor="title">Tytuł: </label>
+            <View
+              style={styles.textInputView}
+              lightColor="rgba(0,0,0,0.8)"
+              darkColor="rgba(255,255,255,0.8)"
+            >
+              <TextInput
+                style={styles.textInput}
+                ref={titleRef}
+                onChangeText={(text) => setTitle(text)}
+              />
+            </View>
+          </Text>
+
+          <Text
+            style={styles.formLine}
+            lightColor="rgba(0,0,0,0.8)"
+            darkColor="rgba(255,255,255,0.8)"
+          >
+            <label htmlFor="author">Autor: </label>
+            <View
+              style={styles.textInputView}
+              lightColor="rgba(0,0,0,0.8)"
+              darkColor="rgba(255,255,255,0.8)"
+            >
+              <TextInput
+                style={styles.textInput}
+                ref={authorRef}
+                onChangeText={(text) => setAuthor(text)}
+              />
+            </View>
+          </Text>
+
+          <Text
+            style={styles.formLine}
+            lightColor="rgba(0,0,0,0.8)"
+            darkColor="rgba(255,255,255,0.8)"
+          >
+            <label htmlFor="date">Rok akademicki: </label>
+            <View
+              style={styles.textInputView}
+              lightColor="rgba(0,0,0,0.8)"
+              darkColor="rgba(255,255,255,0.8)"
+            >
+              <TextInput
+                style={styles.textInput}
+                keyboardType="number-pad"
+                ref={dateRef}
+                onChangeText={(text) => setDate(Number(text))}
+              />
+            </View>
+          </Text>
+
+          <Text
+            style={styles.formLineSwitch}
+            lightColor="rgba(0,0,0,0.8)"
+            darkColor="rgba(255,255,255,0.8)"
+          >
+            <label htmlFor="isDiploma">Projekt dyplomowy: </label>
+
+            <View style={styles.textInputView}>
+              <Switch
+                ref={isDiplomaRef}
+                onValueChange={toggleIsDiploma}
+                value={isDiploma}
+              />
+            </View>
+          </Text>
+
+          <Text
+            style={styles.formLine}
+            lightColor="rgba(0,0,0,0.8)"
+            darkColor="rgba(255,255,255,0.8)"
+          >
+            <label htmlFor="category">Kategoria: </label>
+            <View
+              style={styles.textInputView}
+              lightColor="rgba(0,0,0,0.8)"
+              darkColor="rgba(255,255,255,0.8)"
+            >
+              <TextInput
+                style={styles.textInput}
+                ref={categoryRef}
+                onChangeText={(text) => setCategory(text)}
+              />
+            </View>
+          </Text>
+
+          <Text
+            style={styles.formLine}
+            lightColor="rgba(0,0,0,0.8)"
+            darkColor="rgba(255,255,255,0.8)"
+          >
+            <label htmlFor="file">Plik Projektu: </label>
             <input type="file" id="file" name="file" />
+          </Text>
+          <Text
+            style={styles.textInput}
+            lightColor="rgba(0,0,0,0.8)"
+            darkColor="rgba(255,255,255,0.8)"
+          >
             <input
               type="button"
               value="Dodaj Projekt"
               onClick={handleFormSubmit}
             />
           </Text>
-        </form>
-
-        <Text
-          style={styles.getStartedText}
-          lightColor="rgba(0,0,0,0.8)"
-          darkColor="rgba(255,255,255,0.8)"
-        >
-          Pozostale informacje o projekcie sa ustawione na sztywno poniewaz to
-          tylko test polaczenia z API i baza danych.
-        </Text>
-      </View>
+        </View>
+      </form>
     </View>
   );
 }
@@ -105,10 +214,14 @@ function handleHelpPress() {
 }
 
 const styles = StyleSheet.create({
-  getStartedContainer: {
+  form: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 8,
     alignItems: "center",
     marginHorizontal: 50,
   },
+
   homeScreenFilename: {
     marginVertical: 7,
   },
@@ -116,10 +229,28 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     paddingHorizontal: 4,
   },
-  getStartedText: {
+  formLine: {
+    padding: 4,
     fontSize: 17,
     lineHeight: 24,
-    textAlign: "center",
+    textAlign: "left",
+  },
+  formLineSwitch: {
+    padding: 4,
+    fontSize: 17,
+    lineHeight: 24,
+    textAlign: "left",
+    display: "flex",
+    alignContent: "center",
+  },
+  textInput: {
+    padding: 4,
+    fontSize: 17,
+    lineHeight: 24,
+    textAlign: "left",
+  },
+  textInputView: {
+    margin: 4,
   },
   helpContainer: {
     marginTop: 15,
