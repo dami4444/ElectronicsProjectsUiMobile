@@ -1,7 +1,8 @@
 import axios from "axios";
 import * as WebBrowser from "expo-web-browser";
-import { useRef, useState } from "react";
-import { StyleSheet, Switch, TextInput, TouchableOpacity } from "react-native";
+import React, { useRef, useState } from "react";
+import { StyleSheet, Switch, TextInput, Button } from "react-native";
+import * as DocumentPicker from "expo-document-picker";
 
 import Colors from "../constants/Colors";
 import { MonoText } from "./StyledText";
@@ -24,7 +25,15 @@ export default function AddProject({ path }: { path: string }) {
   const toggleIsDiploma = () => setIsDiploma((previousState) => !previousState);
   const [category, setCategory] = useState("");
 
-  console.log("state", title, author, isDiploma);
+  const [file, setFile] = useState<DocumentPicker.DocumentResult | null>(null);
+  const pickFile = async () => {
+    const res = await DocumentPicker.getDocumentAsync();
+    setFile(res);
+  };
+
+  console.log("state file ", file);
+
+  // console.log("state", title, author, isDiploma);
 
   const handleFormSubmit = () => {
     // const data = {
@@ -52,14 +61,14 @@ export default function AddProject({ path }: { path: string }) {
     const formData = new FormData();
 
     //@ts-ignore
-    const file = document.getElementById("file");
     // let filenameParam = encodeURIComponent(1);
     // filenameParam += encodeURIComponent("/");
     // filenameParam += encodeURIComponent(file.name);
 
     //var file = document.querySelector("#file");
+
     //@ts-ignore
-    if (file) formData.append("file", file.files[0]);
+    if (file.file) formData.append("file", file.file);
     formData.append("json", JSON.stringify(data));
 
     axios
@@ -82,127 +91,131 @@ export default function AddProject({ path }: { path: string }) {
 
   return (
     <View>
-      <form
+      {/* <form
         id="uploadForm"
         action="http://localhost:5555/admin/add_mp"
         role="form"
         method="post"
-      >
-        <View style={styles.form}>
-          <Text
-            style={styles.formLine}
+      > */}
+      <View style={styles.form}>
+        <Text
+          style={styles.formLine}
+          lightColor="rgba(0,0,0,0.8)"
+          darkColor="rgba(255,255,255,0.8)"
+        >
+          Tytuł:
+          <View
+            style={styles.textInputView}
             lightColor="rgba(0,0,0,0.8)"
             darkColor="rgba(255,255,255,0.8)"
           >
-            <label htmlFor="title">Tytuł: </label>
-            <View
-              style={styles.textInputView}
-              lightColor="rgba(0,0,0,0.8)"
-              darkColor="rgba(255,255,255,0.8)"
-            >
-              <TextInput
-                style={styles.textInput}
-                ref={titleRef}
-                onChangeText={(text) => setTitle(text)}
-              />
-            </View>
-          </Text>
-
-          <Text
-            style={styles.formLine}
-            lightColor="rgba(0,0,0,0.8)"
-            darkColor="rgba(255,255,255,0.8)"
-          >
-            <label htmlFor="author">Autor: </label>
-            <View
-              style={styles.textInputView}
-              lightColor="rgba(0,0,0,0.8)"
-              darkColor="rgba(255,255,255,0.8)"
-            >
-              <TextInput
-                style={styles.textInput}
-                ref={authorRef}
-                onChangeText={(text) => setAuthor(text)}
-              />
-            </View>
-          </Text>
-
-          <Text
-            style={styles.formLine}
-            lightColor="rgba(0,0,0,0.8)"
-            darkColor="rgba(255,255,255,0.8)"
-          >
-            <label htmlFor="date">Rok akademicki: </label>
-            <View
-              style={styles.textInputView}
-              lightColor="rgba(0,0,0,0.8)"
-              darkColor="rgba(255,255,255,0.8)"
-            >
-              <TextInput
-                style={styles.textInput}
-                keyboardType="number-pad"
-                ref={dateRef}
-                onChangeText={(text) => setDate(Number(text))}
-              />
-            </View>
-          </Text>
-
-          <Text
-            style={styles.formLineSwitch}
-            lightColor="rgba(0,0,0,0.8)"
-            darkColor="rgba(255,255,255,0.8)"
-          >
-            <label htmlFor="isDiploma">Projekt dyplomowy: </label>
-
-            <View style={styles.textInputView}>
-              <Switch
-                ref={isDiplomaRef}
-                onValueChange={toggleIsDiploma}
-                value={isDiploma}
-              />
-            </View>
-          </Text>
-
-          <Text
-            style={styles.formLine}
-            lightColor="rgba(0,0,0,0.8)"
-            darkColor="rgba(255,255,255,0.8)"
-          >
-            <label htmlFor="category">Kategoria: </label>
-            <View
-              style={styles.textInputView}
-              lightColor="rgba(0,0,0,0.8)"
-              darkColor="rgba(255,255,255,0.8)"
-            >
-              <TextInput
-                style={styles.textInput}
-                ref={categoryRef}
-                onChangeText={(text) => setCategory(text)}
-              />
-            </View>
-          </Text>
-
-          <Text
-            style={styles.formLine}
-            lightColor="rgba(0,0,0,0.8)"
-            darkColor="rgba(255,255,255,0.8)"
-          >
-            <label htmlFor="file">Plik Projektu: </label>
-            <input type="file" id="file" name="file" />
-          </Text>
-          <Text
-            style={styles.textInput}
-            lightColor="rgba(0,0,0,0.8)"
-            darkColor="rgba(255,255,255,0.8)"
-          >
-            <input
-              type="button"
-              value="Dodaj Projekt"
-              onClick={handleFormSubmit}
+            <TextInput
+              style={styles.textInput}
+              ref={titleRef}
+              onChangeText={(text) => setTitle(text)}
             />
-          </Text>
-        </View>
-      </form>
+          </View>
+        </Text>
+
+        <Text
+          style={styles.formLine}
+          lightColor="rgba(0,0,0,0.8)"
+          darkColor="rgba(255,255,255,0.8)"
+        >
+          Autor:
+          <View
+            style={styles.textInputView}
+            lightColor="rgba(0,0,0,0.8)"
+            darkColor="rgba(255,255,255,0.8)"
+          >
+            <TextInput
+              style={styles.textInput}
+              ref={authorRef}
+              onChangeText={(text) => setAuthor(text)}
+            />
+          </View>
+        </Text>
+
+        <Text
+          style={styles.formLine}
+          lightColor="rgba(0,0,0,0.8)"
+          darkColor="rgba(255,255,255,0.8)"
+        >
+          Rok akademicki:
+          <View
+            style={styles.textInputView}
+            lightColor="rgba(0,0,0,0.8)"
+            darkColor="rgba(255,255,255,0.8)"
+          >
+            <TextInput
+              style={styles.textInput}
+              keyboardType="number-pad"
+              ref={dateRef}
+              onChangeText={(text) => setDate(Number(text))}
+            />
+          </View>
+        </Text>
+
+        <Text
+          style={styles.formLineSwitch}
+          lightColor="rgba(0,0,0,0.8)"
+          darkColor="rgba(255,255,255,0.8)"
+        >
+          Projekt dyplomowy:
+          <View style={styles.textInputView}>
+            <Switch
+              ref={isDiplomaRef}
+              onValueChange={toggleIsDiploma}
+              value={isDiploma}
+            />
+          </View>
+        </Text>
+
+        <Text
+          style={styles.formLine}
+          lightColor="rgba(0,0,0,0.8)"
+          darkColor="rgba(255,255,255,0.8)"
+        >
+          Kategoria:
+          <View
+            style={styles.textInputView}
+            lightColor="rgba(0,0,0,0.8)"
+            darkColor="rgba(255,255,255,0.8)"
+          >
+            <TextInput
+              style={styles.textInput}
+              ref={categoryRef}
+              onChangeText={(text) => setCategory(text)}
+            />
+          </View>
+        </Text>
+
+        <Text
+          style={styles.formLine}
+          lightColor="rgba(0,0,0,0.8)"
+          darkColor="rgba(255,255,255,0.8)"
+        >
+          Plik Projektu:
+          <Button
+            onPress={pickFile}
+            title="Wybierz plik"
+            // color="#841584"
+          />
+        </Text>
+        <Text
+          style={styles.textInput}
+          lightColor="rgba(0,0,0,0.8)"
+          darkColor="rgba(255,255,255,0.8)"
+        >
+          <Button
+            onPress={handleFormSubmit}
+            title="Dodaj Projekt"
+            color="#841584"
+            // accessibilityLabel="Learn more about this purple button"
+          />
+        </Text>
+      </View>
+      {/* </form> */}
     </View>
   );
 }
