@@ -196,23 +196,35 @@ export default function AddProject({ path }: { path: string }) {
           darkColor="rgba(255,255,255,0.8)"
         >
           Plik Projektu:
-          <Button
-            onPress={pickFile}
-            title="Wybierz plik"
-            // color="#841584"
-          />
+          <View style={styles.button}>
+            <Button
+              onPress={pickFile}
+              title="Wybierz plik"
+              // color="#841584"
+            />
+          </View>
         </Text>
+        <Text
+          style={styles.formLine}
+          lightColor="rgba(0,0,0,0.8)"
+          darkColor="rgba(255,255,255,0.8)"
+        >
+          {file?.type === "success" ? file.name : null}
+        </Text>
+
         <Text
           style={styles.textInput}
           lightColor="rgba(0,0,0,0.8)"
           darkColor="rgba(255,255,255,0.8)"
         >
-          <Button
-            onPress={handleFormSubmit}
-            title="Dodaj Projekt"
-            color="#841584"
-            // accessibilityLabel="Learn more about this purple button"
-          />
+          <View style={styles.button}>
+            <Button
+              onPress={handleFormSubmit}
+              title="Dodaj Projekt"
+              color="#841584"
+              // accessibilityLabel="Learn more about this purple button"
+            />
+          </View>
         </Text>
       </View>
       {/* </form> */}
@@ -265,6 +277,10 @@ const styles = StyleSheet.create({
   textInputView: {
     margin: 4,
   },
+  button: {
+    margin: 4,
+  },
+
   helpContainer: {
     marginTop: 15,
     marginHorizontal: 20,
