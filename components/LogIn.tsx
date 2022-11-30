@@ -10,15 +10,27 @@ import { Text, View } from "./Themed";
 export default function LogIn({
   setUsername,
   setPassword,
+  username,
+  password,
 }: {
   setUsername: (username: string) => void;
   setPassword: (password: string) => void;
+  username: string;
+  password: string;
 }) {
   const [typedUsername, setTypedUsername] = useState("");
   const [typedPassword, setTypedPassword] = useState("");
 
+  const isLoggedIn = !!username && !!password;
+
   const USERNAME = "fesz";
   const PASSWORD = "admin";
+
+  const handleLogout = () => {
+    setUsername("");
+    setPassword("");
+  };
+
   const handleLogin = () => {
     // const auth = {
     //   login: typedUsername,
@@ -52,49 +64,58 @@ export default function LogIn({
           lightColor="rgba(0,0,0,0.8)"
           darkColor="rgba(255,255,255,0.8)"
         >
-          Zaloguj się jako administrator aby móc usuwać i dodawać projekty.
+          {isLoggedIn
+            ? `Jesteś zalogowany jako ${username}`
+            : "Zaloguj się jako administrator aby móc usuwać i dodawać projekty."}
         </Text>
 
-        <View
-          style={[styles.codeHighlightContainer, styles.homeScreenFilename]}
-          darkColor="rgba(255,255,255,0.05)"
-          lightColor="rgba(0,0,0,0.05)"
-        >
-          <View
-            // style={styles.textInputView}
-            lightColor="rgba(0,0,0,0.8)"
-            darkColor="rgba(255,255,255,0.8)"
-          >
-            <TextInput
-              placeholder="Username"
-              style={styles.textInput}
-              // ref={categoryRef}
-              onChangeText={(text) => setTypedUsername(text)}
-            />
-          </View>
-        </View>
-
-        <View
-          style={[styles.codeHighlightContainer, styles.homeScreenFilename]}
-          darkColor="rgba(255,255,255,0.05)"
-          lightColor="rgba(0,0,0,0.05)"
-        >
-          <View
-            // style={styles.textInputView}
-            lightColor="rgba(0,0,0,0.8)"
-            darkColor="rgba(255,255,255,0.8)"
-          >
-            <TextInput
-              placeholder="Password"
-              style={styles.textInput}
-              // ref={categoryRef}
-              onChangeText={(text) => setTypedPassword(text)}
-            />
-          </View>
-        </View>
+        {!isLoggedIn && (
+          <>
+            <View
+              style={[styles.codeHighlightContainer, styles.homeScreenFilename]}
+              darkColor="rgba(255,255,255,0.05)"
+              lightColor="rgba(0,0,0,0.05)"
+            >
+              <View
+                // style={styles.textInputView}
+                lightColor="rgba(0,0,0,0.8)"
+                darkColor="rgba(255,255,255,0.8)"
+              >
+                <TextInput
+                  placeholder="Username"
+                  style={styles.textInput}
+                  // ref={categoryRef}
+                  onChangeText={(text) => setTypedUsername(text)}
+                />
+              </View>
+            </View>
+            <View
+              style={[styles.codeHighlightContainer, styles.homeScreenFilename]}
+              darkColor="rgba(255,255,255,0.05)"
+              lightColor="rgba(0,0,0,0.05)"
+            >
+              <View
+                // style={styles.textInputView}
+                lightColor="rgba(0,0,0,0.8)"
+                darkColor="rgba(255,255,255,0.8)"
+              >
+                <TextInput
+                  placeholder="Password"
+                  style={styles.textInput}
+                  // ref={categoryRef}
+                  onChangeText={(text) => setTypedPassword(text)}
+                />
+              </View>
+            </View>
+          </>
+        )}
 
         <View style={styles.button}>
-          <Button onPress={handleLogin} title="Log in" />
+          {isLoggedIn ? (
+            <Button onPress={handleLogout} title="Log out" />
+          ) : (
+            <Button onPress={handleLogin} title="Log in" />
+          )}
         </View>
       </View>
     </View>

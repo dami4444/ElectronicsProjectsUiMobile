@@ -6,7 +6,17 @@ import EditScreenInfo from "../components/EditScreenInfo";
 import LogIn from "../components/LogIn";
 import { Text, View } from "../components/Themed";
 
-export default function ModalScreen() {
+export default function ModalScreen({
+  setUsername,
+  setPassword,
+  username,
+  password,
+}: {
+  setUsername: (username: string) => void;
+  setPassword: (password: string) => void;
+  username: string;
+  password: string;
+}) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Log in</Text>
@@ -15,14 +25,11 @@ export default function ModalScreen() {
         lightColor="#eee"
         darkColor="rgba(255,255,255,0.1)"
       />
-      {/* //TODO" Pass global state setter */}
       <LogIn
-        setUsername={function (): void {
-          throw new Error("Function not implemented.");
-        }}
-        setPassword={function (): void {
-          throw new Error("Function not implemented.");
-        }}
+        username={username}
+        password={password}
+        setUsername={setUsername}
+        setPassword={setPassword}
       />
       {/* Use a light status bar on iOS to account for the black space above the modal */}
       <StatusBar style={Platform.OS === "ios" ? "light" : "auto"} />
