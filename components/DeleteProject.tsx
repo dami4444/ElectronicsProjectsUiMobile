@@ -4,6 +4,7 @@ import React from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
 
 import Colors from "../constants/Colors";
+import { RefetchProjectsProps } from "../navigation";
 import { AuthProps } from "./LogIn";
 import { MonoText } from "./StyledText";
 import { Text, View } from "./Themed";
@@ -14,23 +15,18 @@ export default function DeleteProject({
   setPassword,
   username,
   password,
+  refetchProjects,
+  setRefetchProjects,
 }: {
   id: number;
-} & AuthProps) {
+} & AuthProps &
+  RefetchProjectsProps) {
   // const USERNAME = "fesz";
   // const PASSWORD = "admin";
 
   const handleDeleteProject = () => {
-    //@ts-ignore
-    // let filenameParam = encodeURIComponent(1);
-    // filenameParam += encodeURIComponent("/");
-    // filenameParam += encodeURIComponent(file.name);
-
-    //var file = document.querySelector("#file");
-    //@ts-ignore
-
     axios
-      .get(`http://localhost:5555/admin/check`, {
+      .delete(`http://localhost:5555/admin/delete/${id}`, {
         auth: {
           username: username,
           password: password,
@@ -38,30 +34,17 @@ export default function DeleteProject({
       })
       .then(function (response) {
         console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-
-    axios
-      .post(
-        `http://localhost:5555/admin/delete/${id}`,
-        {},
-        {
-          auth: {
-            username: username,
-            password: password,
-          },
-        }
-      )
-      .then(function (response) {
-        console.log(response);
+        setRefetchProjects(true);
       })
       .catch(function (error) {
         console.log(error);
       });
   };
 
+  const isLoggedIn = !!username && !!password;
+  if (!isLoggedIn) {
+    return null;
+  }
   return (
     <View>
       <button onClick={handleDeleteProject}>Usuń Projekt</button>

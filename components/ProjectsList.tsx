@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, TouchableOpacity } from "react-native";
 
 import Colors from "../constants/Colors";
+import { RefetchProjectsProps } from "../navigation";
 import DeleteProject from "./DeleteProject";
 import { AuthProps } from "./LogIn";
 import { MonoText } from "./StyledText";
@@ -14,21 +15,26 @@ export default function ProjectsList({
   setPassword,
   username,
   password,
-}: AuthProps) {
+  refetchProjects,
+  setRefetchProjects,
+}: AuthProps & RefetchProjectsProps) {
   const [projects, setProjects] = useState([]);
   //projects.push({ author: "test author from js", title: "test1" });
 
   useEffect(() => {
-    axios
-      .get("http://localhost:5555/projects")
-      .then(function (response) {
-        console.log("response", response);
-        setProjects(response.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  }, []);
+    if (refetchProjects) {
+      axios
+        .get("http://localhost:5555/projects")
+        .then(function (response) {
+          console.log("response", response);
+          setProjects(response.data);
+          setRefetchProjects(false);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
+  }, [refetchProjects]);
 
   return (
     <View>
@@ -63,6 +69,8 @@ export default function ProjectsList({
                   password={password}
                   setUsername={setUsername}
                   setPassword={setPassword}
+                  refetchProjects={refetchProjects}
+                  setRefetchProjects={setRefetchProjects}
                 />
               </>
             );

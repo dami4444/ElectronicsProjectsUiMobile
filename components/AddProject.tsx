@@ -8,13 +8,16 @@ import Colors from "../constants/Colors";
 import { MonoText } from "./StyledText";
 import { Text, View } from "./Themed";
 import { AuthProps } from "./LogIn";
+import { RefetchProjectsProps } from "../navigation";
 
 export default function AddProject({
   setUsername,
   setPassword,
   username,
   password,
-}: AuthProps) {
+  refetchProjects,
+  setRefetchProjects,
+}: AuthProps & RefetchProjectsProps) {
   // const USERNAME = "fesz";
   // const PASSWORD = "admin";
 
@@ -87,11 +90,35 @@ export default function AddProject({
       })
       .then(function (response) {
         console.log(response);
+        setRefetchProjects(true);
       })
       .catch(function (error) {
         console.log(error);
       });
   };
+
+  const isLoggedIn = !!username && !!password;
+  if (!isLoggedIn) {
+    return (
+      <View style={styles.getStartedContainer}>
+        <Text
+          style={styles.getStartedText}
+          lightColor="rgba(0,0,0,0.8)"
+          darkColor="rgba(255,255,255,0.8)"
+        >
+          Aby dodać projekt musisz zalogować się na konto administratora.
+        </Text>
+        <Text
+          style={styles.getStartedText}
+          lightColor="rgba(0,0,0,0.8)"
+          darkColor="rgba(255,255,255,0.8)"
+        >
+          Panel logowania dostępny jest po kliknięciu przycisku po prawej
+          stronie na górze.
+        </Text>
+      </View>
+    );
+  }
 
   return (
     <View>
@@ -250,7 +277,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginHorizontal: 50,
   },
-
+  getStartedContainer: {
+    alignItems: "center",
+    marginHorizontal: 50,
+  },
   homeScreenFilename: {
     marginVertical: 7,
   },

@@ -29,6 +29,11 @@ import {
 } from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
 
+export type RefetchProjectsProps = {
+  setRefetchProjects: (shouldRefetch: boolean) => void;
+  refetchProjects: boolean;
+};
+
 export default function Navigation({
   colorScheme,
 }: {
@@ -53,6 +58,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 function RootNavigator() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [refetchProjects, setRefetchProjects] = useState(true);
 
   return (
     <Stack.Navigator>
@@ -64,6 +70,8 @@ function RootNavigator() {
             password={password}
             setUsername={setUsername}
             setPassword={setPassword}
+            refetchProjects={refetchProjects}
+            setRefetchProjects={setRefetchProjects}
           />
         )}
       </Stack.Screen>
@@ -101,7 +109,9 @@ function BottomTabNavigator({
   setPassword,
   username,
   password,
-}: AuthProps) {
+  refetchProjects,
+  setRefetchProjects,
+}: AuthProps & RefetchProjectsProps) {
   const colorScheme = useColorScheme();
 
   return (
@@ -140,6 +150,8 @@ function BottomTabNavigator({
             password={password}
             setUsername={setUsername}
             setPassword={setPassword}
+            refetchProjects={refetchProjects}
+            setRefetchProjects={setRefetchProjects}
           />
         )}
       </BottomTab.Screen>
@@ -172,6 +184,8 @@ function BottomTabNavigator({
             password={password}
             setUsername={setUsername}
             setPassword={setPassword}
+            refetchProjects={refetchProjects}
+            setRefetchProjects={setRefetchProjects}
           />
         )}
       </BottomTab.Screen>

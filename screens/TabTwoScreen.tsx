@@ -5,13 +5,16 @@ import AddProject from "../components/AddProject";
 import EditScreenInfo from "../components/EditScreenInfo";
 import { AuthProps } from "../components/LogIn";
 import { Text, View } from "../components/Themed";
+import { RefetchProjectsProps } from "../navigation";
 
 export default function TabTwoScreen({
   setUsername,
   setPassword,
   username,
   password,
-}: AuthProps) {
+  refetchProjects,
+  setRefetchProjects,
+}: AuthProps & RefetchProjectsProps) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Dodaj Projekt</Text>
@@ -25,6 +28,8 @@ export default function TabTwoScreen({
         password={password}
         setUsername={setUsername}
         setPassword={setPassword}
+        refetchProjects={refetchProjects}
+        setRefetchProjects={setRefetchProjects}
       />
     </View>
   );

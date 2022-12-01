@@ -5,6 +5,7 @@ import EditScreenInfo from "../components/EditScreenInfo";
 import { AuthProps } from "../components/LogIn";
 import ProjectsList from "../components/ProjectsList";
 import { Text, View } from "../components/Themed";
+import { RefetchProjectsProps } from "../navigation";
 import { RootTabScreenProps } from "../types";
 
 export default function TabOneScreen({
@@ -13,7 +14,9 @@ export default function TabOneScreen({
   setPassword,
   username,
   password,
-}: RootTabScreenProps<"TabOne"> & AuthProps) {
+  refetchProjects,
+  setRefetchProjects,
+}: RootTabScreenProps<"TabOne"> & AuthProps & RefetchProjectsProps) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Lista Projektów</Text>
@@ -27,6 +30,8 @@ export default function TabOneScreen({
         password={password}
         setUsername={setUsername}
         setPassword={setPassword}
+        refetchProjects={refetchProjects}
+        setRefetchProjects={setRefetchProjects}
       />
     </View>
   );
