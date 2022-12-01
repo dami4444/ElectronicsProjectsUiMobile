@@ -7,17 +7,19 @@ import Colors from "../constants/Colors";
 import { MonoText } from "./StyledText";
 import { Text, View } from "./Themed";
 
+export type AuthProps = {
+  setUsername: (username: string) => void;
+  setPassword: (password: string) => void;
+  username: string;
+  password: string;
+};
+
 export default function LogIn({
   setUsername,
   setPassword,
   username,
   password,
-}: {
-  setUsername: (username: string) => void;
-  setPassword: (password: string) => void;
-  username: string;
-  password: string;
-}) {
+}: AuthProps) {
   const [typedUsername, setTypedUsername] = useState("");
   const [typedPassword, setTypedPassword] = useState("");
 

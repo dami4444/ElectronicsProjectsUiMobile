@@ -7,10 +7,16 @@ import * as DocumentPicker from "expo-document-picker";
 import Colors from "../constants/Colors";
 import { MonoText } from "./StyledText";
 import { Text, View } from "./Themed";
+import { AuthProps } from "./LogIn";
 
-export default function AddProject({ path }: { path: string }) {
-  const USERNAME = "fesz";
-  const PASSWORD = "admin";
+export default function AddProject({
+  setUsername,
+  setPassword,
+  username,
+  password,
+}: AuthProps) {
+  // const USERNAME = "fesz";
+  // const PASSWORD = "admin";
 
   const titleRef = useRef<TextInput>(null);
   const authorRef = useRef<TextInput>(null);
@@ -30,8 +36,6 @@ export default function AddProject({ path }: { path: string }) {
     const res = await DocumentPicker.getDocumentAsync();
     setFile(res);
   };
-
-  console.log("state file ", file);
 
   // console.log("state", title, author, isDiploma);
 
@@ -77,8 +81,8 @@ export default function AddProject({ path }: { path: string }) {
           "Content-Type": "multipart/form-data",
         },
         auth: {
-          username: USERNAME,
-          password: PASSWORD,
+          username: username,
+          password: password,
         },
       })
       .then(function (response) {

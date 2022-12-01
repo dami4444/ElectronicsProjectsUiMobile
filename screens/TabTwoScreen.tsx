@@ -3,9 +3,15 @@ import { StyleSheet } from "react-native";
 import AddProject from "../components/AddProject";
 
 import EditScreenInfo from "../components/EditScreenInfo";
+import { AuthProps } from "../components/LogIn";
 import { Text, View } from "../components/Themed";
 
-export default function TabTwoScreen() {
+export default function TabTwoScreen({
+  setUsername,
+  setPassword,
+  username,
+  password,
+}: AuthProps) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Dodaj Projekt</Text>
@@ -14,7 +20,12 @@ export default function TabTwoScreen() {
         lightColor="#eee"
         darkColor="rgba(255,255,255,0.1)"
       />
-      <AddProject path="/screens/TabTwoScreen.tsx" />
+      <AddProject
+        username={username}
+        password={password}
+        setUsername={setUsername}
+        setPassword={setPassword}
+      />
     </View>
   );
 }

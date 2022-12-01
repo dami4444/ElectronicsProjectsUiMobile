@@ -3,7 +3,7 @@ import React from "react";
 import { Platform, StyleSheet } from "react-native";
 
 import EditScreenInfo from "../components/EditScreenInfo";
-import LogIn from "../components/LogIn";
+import LogIn, { AuthProps } from "../components/LogIn";
 import { Text, View } from "../components/Themed";
 
 export default function ModalScreen({
@@ -11,12 +11,7 @@ export default function ModalScreen({
   setPassword,
   username,
   password,
-}: {
-  setUsername: (username: string) => void;
-  setPassword: (password: string) => void;
-  username: string;
-  password: string;
-}) {
+}: AuthProps) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Log in</Text>

@@ -1,14 +1,24 @@
 import axios from "axios";
 import * as WebBrowser from "expo-web-browser";
+import React from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
 
 import Colors from "../constants/Colors";
+import { AuthProps } from "./LogIn";
 import { MonoText } from "./StyledText";
 import { Text, View } from "./Themed";
 
-export default function DeleteProject({ id }: { id: number }) {
-  const USERNAME = "fesz";
-  const PASSWORD = "admin";
+export default function DeleteProject({
+  id,
+  setUsername,
+  setPassword,
+  username,
+  password,
+}: {
+  id: number;
+} & AuthProps) {
+  // const USERNAME = "fesz";
+  // const PASSWORD = "admin";
 
   const handleDeleteProject = () => {
     //@ts-ignore
@@ -22,8 +32,8 @@ export default function DeleteProject({ id }: { id: number }) {
     axios
       .get(`http://localhost:5555/admin/check`, {
         auth: {
-          username: USERNAME,
-          password: PASSWORD,
+          username: username,
+          password: password,
         },
       })
       .then(function (response) {
@@ -39,8 +49,8 @@ export default function DeleteProject({ id }: { id: number }) {
         {},
         {
           auth: {
-            username: USERNAME,
-            password: PASSWORD,
+            username: username,
+            password: password,
           },
         }
       )

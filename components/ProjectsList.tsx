@@ -5,10 +5,16 @@ import { ScrollView, StyleSheet, TouchableOpacity } from "react-native";
 
 import Colors from "../constants/Colors";
 import DeleteProject from "./DeleteProject";
+import { AuthProps } from "./LogIn";
 import { MonoText } from "./StyledText";
 import { Text, View } from "./Themed";
 
-export default function ProjectsList() {
+export default function ProjectsList({
+  setUsername,
+  setPassword,
+  username,
+  password,
+}: AuthProps) {
   const [projects, setProjects] = useState([]);
   //projects.push({ author: "test author from js", title: "test1" });
 
@@ -51,7 +57,13 @@ export default function ProjectsList() {
                 <MonoText style={[styles.projectsListItem]}>
                   {`id: ${project.id}, author: ${project.author}, title: ${project.title}, file name: ${project.internal_filename} `}
                 </MonoText>
-                <DeleteProject id={project.id}></DeleteProject>
+                <DeleteProject
+                  id={project.id}
+                  username={username}
+                  password={password}
+                  setUsername={setUsername}
+                  setPassword={setPassword}
+                />
               </>
             );
           })}

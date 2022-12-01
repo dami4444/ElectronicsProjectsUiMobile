@@ -14,6 +14,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
 import { useState } from "react";
 import { ColorSchemeName, Pressable } from "react-native";
+import { AuthProps } from "../components/LogIn";
 
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
@@ -55,11 +56,17 @@ function RootNavigator() {
 
   return (
     <Stack.Navigator>
-      <Stack.Screen
-        name="Root"
-        component={BottomTabNavigator}
-        options={{ headerShown: false }}
-      />
+      <Stack.Screen name="Root" options={{ headerShown: false }}>
+        {(props) => (
+          <BottomTabNavigator
+            {...props}
+            username={username}
+            password={password}
+            setUsername={setUsername}
+            setPassword={setPassword}
+          />
+        )}
+      </Stack.Screen>
       <Stack.Screen
         name="NotFound"
         component={NotFoundScreen}
@@ -81,6 +88,7 @@ function RootNavigator() {
     </Stack.Navigator>
   );
 }
+//TODO: use global state in auth endpoints
 
 /**
  * A bottom tab navigator displays tab buttons on the bottom of the display to switch screens.
@@ -88,7 +96,12 @@ function RootNavigator() {
  */
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
-function BottomTabNavigator() {
+function BottomTabNavigator({
+  setUsername,
+  setPassword,
+  username,
+  password,
+}: AuthProps) {
   const colorScheme = useColorScheme();
 
   return (
@@ -100,7 +113,6 @@ function BottomTabNavigator() {
     >
       <BottomTab.Screen
         name="TabOne"
-        component={TabOneScreen}
         options={({ navigation }: RootTabScreenProps<"TabOne">) => ({
           title: "Lista Projektów",
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
@@ -120,11 +132,20 @@ function BottomTabNavigator() {
             </Pressable>
           ),
         })}
-      />
+      >
+        {(props) => (
+          <TabOneScreen
+            {...props}
+            username={username}
+            password={password}
+            setUsername={setUsername}
+            setPassword={setPassword}
+          />
+        )}
+      </BottomTab.Screen>
       <BottomTab.Screen
         name="TabTwo"
-        component={TabTwoScreen}
-        options={({ navigation }: RootTabScreenProps<"TabOne">) => ({
+        options={({ navigation }: RootTabScreenProps<"TabTwo">) => ({
           title: "Dodaj Projekt",
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           headerRight: () => (
@@ -143,7 +164,17 @@ function BottomTabNavigator() {
             </Pressable>
           ),
         })}
-      />
+      >
+        {(props) => (
+          <TabTwoScreen
+            {...props}
+            username={username}
+            password={password}
+            setUsername={setUsername}
+            setPassword={setPassword}
+          />
+        )}
+      </BottomTab.Screen>
     </BottomTab.Navigator>
   );
 }
