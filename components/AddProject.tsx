@@ -101,18 +101,10 @@ export default function AddProject({
   if (!isLoggedIn) {
     return (
       <View style={styles.getStartedContainer}>
-        <Text
-          style={styles.getStartedText}
-          lightColor="rgba(0,0,0,0.8)"
-          darkColor="rgba(255,255,255,0.8)"
-        >
+        <Text lightColor="rgba(0,0,0,0.8)" darkColor="rgba(255,255,255,0.8)">
           Aby dodać projekt musisz zalogować się na konto administratora.
         </Text>
-        <Text
-          style={styles.getStartedText}
-          lightColor="rgba(0,0,0,0.8)"
-          darkColor="rgba(255,255,255,0.8)"
-        >
+        <Text lightColor="rgba(0,0,0,0.8)" darkColor="rgba(255,255,255,0.8)">
           Panel logowania dostępny jest po kliknięciu przycisku po prawej
           stronie na górze.
         </Text>

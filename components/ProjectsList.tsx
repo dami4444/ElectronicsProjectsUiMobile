@@ -7,8 +7,20 @@ import Colors from "../constants/Colors";
 import { RefetchProjectsProps } from "../navigation";
 import DeleteProject from "./DeleteProject";
 import { AuthProps } from "./LogIn";
+import ProjectTile from "./ProjectTile";
 import { MonoText } from "./StyledText";
 import { Text, View } from "./Themed";
+
+export type ProjectData = {
+  id: number;
+  academic_year: number;
+  author: string;
+  category: string;
+  files_link: string;
+  internal_filename: string;
+  is_diploma: boolean;
+  title: string;
+};
 
 export default function ProjectsList({
   setUsername,
@@ -18,13 +30,13 @@ export default function ProjectsList({
   refetchProjects,
   setRefetchProjects,
 }: AuthProps & RefetchProjectsProps) {
-  const [projects, setProjects] = useState([]);
+  const [projects, setProjects] = useState<ProjectData[]>([]);
   //projects.push({ author: "test author from js", title: "test1" });
 
   useEffect(() => {
     if (refetchProjects) {
       axios
-        .get("http://localhost:5555/projects")
+        .get<ProjectData[]>("http://localhost:5555/projects")
         .then(function (response) {
           console.log("response", response);
           setProjects(response.data);
@@ -57,24 +69,17 @@ export default function ProjectsList({
           darkColor="rgba(255,255,255,0.05)"
           lightColor="rgba(0,0,0,0.05)"
         >
-          {projects.map((project: any) => {
-            return (
-              <>
-                <MonoText style={[styles.projectsListItem]}>
-                  {`id: ${project.id}, author: ${project.author}, title: ${project.title}, file name: ${project.internal_filename} `}
-                </MonoText>
-                <DeleteProject
-                  id={project.id}
-                  username={username}
-                  password={password}
-                  setUsername={setUsername}
-                  setPassword={setPassword}
-                  refetchProjects={refetchProjects}
-                  setRefetchProjects={setRefetchProjects}
-                />
-              </>
-            );
-          })}
+          {projects.map((project) => (
+            <ProjectTile
+              project={project}
+              password={password}
+              setPassword={setPassword}
+              username={username}
+              setUsername={setUsername}
+              refetchProjects={refetchProjects}
+              setRefetchProjects={setRefetchProjects}
+            />
+          ))}
         </ScrollView>
       </View>
     </View>

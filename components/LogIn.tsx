@@ -58,6 +58,43 @@ export default function LogIn({
       });
   };
 
+  const handleReauth = () => {
+    // const auth = {
+    //   login: typedUsername,
+    //   password: typedPassword,
+    // };
+    console.log("typedUsername", typedUsername, "typedPassword", typedPassword);
+
+    const newCredentials = JSON.stringify({
+      login: typedUsername,
+      password: typedPassword,
+    });
+
+    axios
+      .post(
+        `http://localhost:5555/admin/reauth`,
+        {
+          login: typedUsername,
+          password: typedPassword,
+        },
+        {
+          auth: {
+            username: typedUsername,
+            password: typedPassword,
+          },
+        }
+      )
+      .then(function (response) {
+        console.log(response);
+        setUsername(typedUsername);
+        setPassword(typedPassword);
+      })
+      .catch(function (error) {
+        console.log(error);
+        //TODO: Add toast with error
+      });
+  };
+
   return (
     <View>
       <View style={styles.getStartedContainer}>
@@ -119,6 +156,57 @@ export default function LogIn({
             <Button onPress={handleLogin} title="Log in" />
           )}
         </View>
+
+        {isLoggedIn && (
+          <>
+            <Text
+              style={styles.authDataChange}
+              lightColor="rgba(0,0,0,0.8)"
+              darkColor="rgba(255,255,255,0.8)"
+            >
+              Zmiana danych logowania:
+            </Text>
+            <View
+              style={[styles.codeHighlightContainer, styles.homeScreenFilename]}
+              darkColor="rgba(255,255,255,0.05)"
+              lightColor="rgba(0,0,0,0.05)"
+            >
+              <View
+                // style={styles.textInputView}
+                lightColor="rgba(0,0,0,0.8)"
+                darkColor="rgba(255,255,255,0.8)"
+              >
+                <TextInput
+                  placeholder="Username"
+                  style={styles.textInput}
+                  // ref={categoryRef}
+                  onChangeText={(text) => setTypedUsername(text)}
+                />
+              </View>
+            </View>
+            <View
+              style={[styles.codeHighlightContainer, styles.homeScreenFilename]}
+              darkColor="rgba(255,255,255,0.05)"
+              lightColor="rgba(0,0,0,0.05)"
+            >
+              <View
+                // style={styles.textInputView}
+                lightColor="rgba(0,0,0,0.8)"
+                darkColor="rgba(255,255,255,0.8)"
+              >
+                <TextInput
+                  placeholder="Password"
+                  style={styles.textInput}
+                  // ref={categoryRef}
+                  onChangeText={(text) => setTypedPassword(text)}
+                />
+              </View>
+            </View>
+            <View style={styles.button}>
+              <Button onPress={handleReauth} title="Zmień dane" />
+            </View>
+          </>
+        )}
       </View>
     </View>
   );
@@ -143,6 +231,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 4,
   },
   getStartedText: {
+    marginBottom: 8,
+    fontSize: 17,
+    lineHeight: 24,
+    textAlign: "center",
+  },
+  authDataChange: {
+    marginTop: 24,
     marginBottom: 8,
     fontSize: 17,
     lineHeight: 24,
