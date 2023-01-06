@@ -2,6 +2,7 @@ import axios from "axios";
 import * as WebBrowser from "expo-web-browser";
 import React from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
+import { Button } from "react-native-paper";
 
 import Colors from "../constants/Colors";
 import { RefetchProjectsProps } from "../navigation";
@@ -45,11 +46,7 @@ export default function DeleteProject({
   if (!isLoggedIn) {
     return null;
   }
-  return (
-    <View>
-      <button onClick={handleDeleteProject}>Usuń Projekt</button>
-    </View>
-  );
+  return <Button onPress={handleDeleteProject}>Usuń</Button>;
 }
 
 function handleHelpPress() {

@@ -1,7 +1,8 @@
 import axios from "axios";
 import * as WebBrowser from "expo-web-browser";
 import React, { useEffect, useState } from "react";
-import { ScrollView, StyleSheet, TouchableOpacity } from "react-native";
+import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Avatar, Button, Card, Text } from "react-native-paper";
 
 import Colors from "../constants/Colors";
 import { RefetchProjectsProps } from "../navigation";
@@ -9,7 +10,6 @@ import DeleteProject from "./DeleteProject";
 import { AuthProps } from "./LogIn";
 import { ProjectData } from "./ProjectsList";
 import { MonoText } from "./StyledText";
-import { Text, View } from "./Themed";
 
 export default function ProjectTile({
   setUsername,
@@ -21,20 +21,40 @@ export default function ProjectTile({
   project,
 }: AuthProps & RefetchProjectsProps & { project: ProjectData }) {
   return (
-    <>
-      <MonoText style={[styles.projectsListItem]}>
-        {`id: ${project.id}, author: ${project.author}, title: ${project.title}, file name: ${project.internal_filename} `}
-      </MonoText>
-      <DeleteProject
-        id={project.id}
-        username={username}
-        password={password}
-        setUsername={setUsername}
-        setPassword={setPassword}
-        refetchProjects={refetchProjects}
-        setRefetchProjects={setRefetchProjects}
-      />
-    </>
+    <Card style={[styles.projectsListItem]}>
+      <Card.Content>
+        <Text variant="titleMedium">{project.title}</Text>
+        <View style={[styles.textLine]}>
+          <Text variant="labelMedium">
+            Autor: <Text variant="bodyMedium">{project.author}</Text>
+          </Text>
+          <Text variant="labelSmall">
+            {project.is_diploma ? "Projekt dyplomowy" : ""}
+          </Text>
+        </View>
+
+        <Text variant="labelMedium">
+          Rok akademicki:{" "}
+          <Text variant="bodyMedium">{project.academic_year}</Text>
+        </Text>
+        <Text variant="labelMedium">
+          Kategoria: <Text variant="bodyMedium">{project.category}</Text>
+        </Text>
+      </Card.Content>
+      <Card.Actions>
+        <DeleteProject
+          id={project.id}
+          username={username}
+          password={password}
+          setUsername={setUsername}
+          setPassword={setPassword}
+          refetchProjects={refetchProjects}
+          setRefetchProjects={setRefetchProjects}
+        />
+
+        <Button>Zobacz więcej</Button>
+      </Card.Actions>
+    </Card>
   );
 }
 
@@ -72,6 +92,13 @@ const styles = StyleSheet.create({
     flexDirection: "column",
   },
   projectsListItem: {
-    paddingVertical: 5,
+    marginVertical: 5,
+    width: 300,
+  },
+  textLine: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    gap: 16,
   },
 });

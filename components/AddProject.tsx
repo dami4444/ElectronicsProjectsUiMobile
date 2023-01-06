@@ -65,14 +65,14 @@ export default function AddProject({
       // files_names: "",
     };
 
-    const formData = new FormData();
-
     //@ts-ignore
     // let filenameParam = encodeURIComponent(1);
     // filenameParam += encodeURIComponent("/");
     // filenameParam += encodeURIComponent(file.name);
 
     //var file = document.querySelector("#file");
+
+    const formData = new FormData();
 
     //@ts-ignore
     if (file.file) formData.append("file", file.file);

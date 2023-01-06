@@ -71,6 +71,7 @@ export default function ProjectsList({
         >
           {projects.map((project) => (
             <ProjectTile
+              key={project.id}
               project={project}
               password={password}
               setPassword={setPassword}

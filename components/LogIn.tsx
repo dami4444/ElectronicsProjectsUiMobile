@@ -79,8 +79,8 @@ export default function LogIn({
         },
         {
           auth: {
-            username: typedUsername,
-            password: typedPassword,
+            username: username,
+            password: password,
           },
         }
       )
