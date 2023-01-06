@@ -1,9 +1,11 @@
+import AsyncStorage from "@react-native-community/async-storage";
 import axios from "axios";
 import * as WebBrowser from "expo-web-browser";
 import React, { useState } from "react";
 import { Button, StyleSheet, TextInput, TouchableOpacity } from "react-native";
 
 import Colors from "../constants/Colors";
+import { passwordStorageKey, usernameStorageKey } from "../navigation";
 import { MonoText } from "./StyledText";
 import { Text, View } from "./Themed";
 
@@ -29,8 +31,19 @@ export default function LogIn({
   const PASSWORD = "admin";
 
   const handleLogout = () => {
+    const clearCredentials = async () => {
+      try {
+        await AsyncStorage.setItem(usernameStorageKey, "");
+        await AsyncStorage.setItem(passwordStorageKey, "");
+        console.log("Cleared credentials");
+      } catch (error) {
+        console.error("Error clearing credentials");
+      }
+    };
+
     setUsername("");
     setPassword("");
+    clearCredentials();
   };
 
   const handleLogin = () => {

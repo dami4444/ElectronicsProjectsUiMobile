@@ -4,6 +4,7 @@
  *
  */
 import { FontAwesome } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-community/async-storage";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import {
   NavigationContainer,
@@ -28,6 +29,9 @@ import {
   RootTabScreenProps,
 } from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
+
+export const usernameStorageKey = "username";
+export const passwordStorageKey = "password";
 
 export type RefetchProjectsProps = {
   setRefetchProjects: (shouldRefetch: boolean) => void;
@@ -59,6 +63,39 @@ function RootNavigator() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [refetchProjects, setRefetchProjects] = useState(true);
+
+  const storeCredentials = async () => {
+    try {
+      await AsyncStorage.setItem(usernameStorageKey, username);
+      await AsyncStorage.setItem(passwordStorageKey, password);
+      console.log("Saved credentials");
+    } catch (error) {
+      console.error("Error saving credentials");
+    }
+  };
+
+  const retrieveCredentials = async () => {
+    try {
+      const usernameStorage = await AsyncStorage.getItem(usernameStorageKey);
+      const passwordStorage = await AsyncStorage.getItem(passwordStorageKey);
+      if (usernameStorage !== null && passwordStorage !== null) {
+        setUsername(usernameStorage);
+        setPassword(passwordStorage);
+      } else {
+        console.log("No credentials in storage");
+      }
+    } catch (error) {
+      console.error("Error retrieving credentials");
+    }
+  };
+
+  React.useEffect(() => {
+    if (username && password) {
+      storeCredentials();
+    } else {
+      retrieveCredentials();
+    }
+  }, [username, password]);
 
   return (
     <Stack.Navigator>
