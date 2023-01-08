@@ -2,7 +2,8 @@ import AsyncStorage from "@react-native-community/async-storage";
 import axios from "axios";
 import * as WebBrowser from "expo-web-browser";
 import React, { useState } from "react";
-import { Button, StyleSheet, TextInput, TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
+import { Button, TextInput } from "react-native-paper";
 
 import Colors from "../constants/Colors";
 import { passwordStorageKey, usernameStorageKey } from "../navigation";
@@ -26,9 +27,6 @@ export default function LogIn({
   const [typedPassword, setTypedPassword] = useState("");
 
   const isLoggedIn = !!username && !!password;
-
-  const USERNAME = "fesz";
-  const PASSWORD = "admin";
 
   const handleLogout = () => {
     const clearCredentials = async () => {
@@ -72,17 +70,6 @@ export default function LogIn({
   };
 
   const handleReauth = () => {
-    // const auth = {
-    //   login: typedUsername,
-    //   password: typedPassword,
-    // };
-    console.log("typedUsername", typedUsername, "typedPassword", typedPassword);
-
-    const newCredentials = JSON.stringify({
-      login: typedUsername,
-      password: typedPassword,
-    });
-
     axios
       .post(
         `http://localhost:5555/admin/reauth`,
@@ -134,8 +121,7 @@ export default function LogIn({
                 darkColor="rgba(255,255,255,0.8)"
               >
                 <TextInput
-                  placeholder="Username"
-                  style={styles.textInput}
+                  label="Login"
                   // ref={categoryRef}
                   onChangeText={(text) => setTypedUsername(text)}
                 />
@@ -152,8 +138,7 @@ export default function LogIn({
                 darkColor="rgba(255,255,255,0.8)"
               >
                 <TextInput
-                  placeholder="Password"
-                  style={styles.textInput}
+                  label="Hasło"
                   // ref={categoryRef}
                   onChangeText={(text) => setTypedPassword(text)}
                 />
@@ -164,9 +149,13 @@ export default function LogIn({
 
         <View style={styles.button}>
           {isLoggedIn ? (
-            <Button onPress={handleLogout} title="Log out" />
+            <Button mode="contained" onPress={handleLogout}>
+              Log out
+            </Button>
           ) : (
-            <Button onPress={handleLogin} title="Log in" />
+            <Button mode="contained" onPress={handleLogin}>
+              Log in
+            </Button>
           )}
         </View>
 
@@ -190,8 +179,7 @@ export default function LogIn({
                 darkColor="rgba(255,255,255,0.8)"
               >
                 <TextInput
-                  placeholder="Username"
-                  style={styles.textInput}
+                  label="Login"
                   // ref={categoryRef}
                   onChangeText={(text) => setTypedUsername(text)}
                 />
@@ -208,15 +196,14 @@ export default function LogIn({
                 darkColor="rgba(255,255,255,0.8)"
               >
                 <TextInput
-                  placeholder="Password"
-                  style={styles.textInput}
+                  label="Hasło"
                   // ref={categoryRef}
                   onChangeText={(text) => setTypedPassword(text)}
                 />
               </View>
             </View>
             <View style={styles.button}>
-              <Button onPress={handleReauth} title="Zmień dane" />
+              <Button onPress={handleReauth}>Zmień dane logowania</Button>
             </View>
           </>
         )}

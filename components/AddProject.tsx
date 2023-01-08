@@ -1,7 +1,7 @@
 import axios from "axios";
 import * as WebBrowser from "expo-web-browser";
 import React, { useRef, useState } from "react";
-import { StyleSheet, Switch, TextInput, Button } from "react-native";
+import { StyleSheet } from "react-native";
 import * as DocumentPicker from "expo-document-picker";
 
 import Colors from "../constants/Colors";
@@ -9,6 +9,7 @@ import { MonoText } from "./StyledText";
 import { Text, View } from "./Themed";
 import { AuthProps } from "./LogIn";
 import { RefetchProjectsProps } from "../navigation";
+import { Button, Switch, TextInput } from "react-native-paper";
 
 export default function AddProject({
   setUsername,
@@ -121,63 +122,42 @@ export default function AddProject({
         method="post"
       > */}
       <View style={styles.form}>
-        <Text
-          style={styles.formLine}
+        <View
+          style={styles.textInputView}
           lightColor="rgba(0,0,0,0.8)"
           darkColor="rgba(255,255,255,0.8)"
         >
-          Tytuł:
-          <View
-            style={styles.textInputView}
-            lightColor="rgba(0,0,0,0.8)"
-            darkColor="rgba(255,255,255,0.8)"
-          >
-            <TextInput
-              style={styles.textInput}
-              ref={titleRef}
-              onChangeText={(text) => setTitle(text)}
-            />
-          </View>
-        </Text>
+          <TextInput
+            label="Tytuł"
+            ref={titleRef}
+            onChangeText={(text) => setTitle(text)}
+          />
+        </View>
 
-        <Text
-          style={styles.formLine}
+        <View
+          style={styles.textInputView}
           lightColor="rgba(0,0,0,0.8)"
           darkColor="rgba(255,255,255,0.8)"
         >
-          Autor:
-          <View
-            style={styles.textInputView}
-            lightColor="rgba(0,0,0,0.8)"
-            darkColor="rgba(255,255,255,0.8)"
-          >
-            <TextInput
-              style={styles.textInput}
-              ref={authorRef}
-              onChangeText={(text) => setAuthor(text)}
-            />
-          </View>
-        </Text>
+          <TextInput
+            label="Autor"
+            ref={authorRef}
+            onChangeText={(text) => setAuthor(text)}
+          />
+        </View>
 
-        <Text
-          style={styles.formLine}
+        <View
+          style={styles.textInputView}
           lightColor="rgba(0,0,0,0.8)"
           darkColor="rgba(255,255,255,0.8)"
         >
-          Rok akademicki:
-          <View
-            style={styles.textInputView}
-            lightColor="rgba(0,0,0,0.8)"
-            darkColor="rgba(255,255,255,0.8)"
-          >
-            <TextInput
-              style={styles.textInput}
-              keyboardType="number-pad"
-              ref={dateRef}
-              onChangeText={(text) => setDate(Number(text))}
-            />
-          </View>
-        </Text>
+          <TextInput
+            label="Rok akademicki"
+            keyboardType="number-pad"
+            ref={dateRef}
+            onChangeText={(text) => setDate(Number(text))}
+          />
+        </View>
 
         <Text
           style={styles.formLineSwitch}
@@ -194,59 +174,46 @@ export default function AddProject({
           </View>
         </Text>
 
-        <Text
-          style={styles.formLine}
+        <View
+          style={styles.textInputView}
           lightColor="rgba(0,0,0,0.8)"
           darkColor="rgba(255,255,255,0.8)"
         >
-          Kategoria:
-          <View
-            style={styles.textInputView}
+          <TextInput
+            label="Kategoria"
+            ref={categoryRef}
+            onChangeText={(text) => setCategory(text)}
+          />
+        </View>
+
+        <View style={styles.filePicker}>
+          <Button
+            onPress={pickFile}
+            title="Wybierz plik"
+            // color="#841584"
+          >
+            Wybierz plik projektu
+          </Button>
+          <Text
+            style={styles.fileName}
             lightColor="rgba(0,0,0,0.8)"
             darkColor="rgba(255,255,255,0.8)"
           >
-            <TextInput
-              style={styles.textInput}
-              ref={categoryRef}
-              onChangeText={(text) => setCategory(text)}
-            />
-          </View>
-        </Text>
+            {file?.type === "success" ? file.name : null}
+          </Text>
+        </View>
 
-        <Text
-          style={styles.formLine}
-          lightColor="rgba(0,0,0,0.8)"
-          darkColor="rgba(255,255,255,0.8)"
-        >
-          Plik Projektu:
-          <View style={styles.button}>
+        <Text lightColor="rgba(0,0,0,0.8)" darkColor="rgba(255,255,255,0.8)">
+          <View>
             <Button
-              onPress={pickFile}
-              title="Wybierz plik"
-              // color="#841584"
-            />
-          </View>
-        </Text>
-        <Text
-          style={styles.formLine}
-          lightColor="rgba(0,0,0,0.8)"
-          darkColor="rgba(255,255,255,0.8)"
-        >
-          {file?.type === "success" ? file.name : null}
-        </Text>
-
-        <Text
-          style={styles.textInput}
-          lightColor="rgba(0,0,0,0.8)"
-          darkColor="rgba(255,255,255,0.8)"
-        >
-          <View style={styles.button}>
-            <Button
+              mode="contained"
               onPress={handleFormSubmit}
-              title="Dodaj Projekt"
+              text="Dodaj Projekt"
               color="#841584"
               // accessibilityLabel="Learn more about this purple button"
-            />
+            >
+              Dodaj Projekt
+            </Button>
           </View>
         </Text>
       </View>
@@ -286,6 +253,12 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     textAlign: "left",
   },
+  fileName: {
+    minHeight: 24,
+    fontSize: 17,
+    lineHeight: 24,
+    textAlign: "left",
+  },
   formLineSwitch: {
     padding: 4,
     fontSize: 17,
@@ -303,8 +276,8 @@ const styles = StyleSheet.create({
   textInputView: {
     margin: 4,
   },
-  button: {
-    margin: 4,
+  filePicker: {
+    marginBottom: 8,
   },
 
   helpContainer: {

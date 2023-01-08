@@ -1,39 +1,33 @@
+import { StatusBar } from "expo-status-bar";
 import React from "react";
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 
 import EditScreenInfo from "../components/EditScreenInfo";
-import { AuthProps } from "../components/LogIn";
-import ProjectsList from "../components/ProjectsList";
+import LogIn, { AuthProps } from "../components/LogIn";
 import { Text, View } from "../components/Themed";
-import { RefetchProjectsProps } from "../navigation";
-import { RootTabScreenProps } from "../types";
 
-export default function TabOneScreen({
-  navigation,
+export default function ProjectScreen({
   setUsername,
   setPassword,
   username,
   password,
-  refetchProjects,
-  setRefetchProjects,
-}: RootTabScreenProps<"TabOne"> & AuthProps & RefetchProjectsProps) {
+}: AuthProps) {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Lista Projektów</Text>
+      <Text style={styles.title}>Log in</Text>
       <View
         style={styles.separator}
         lightColor="#eee"
         darkColor="rgba(255,255,255,0.1)"
       />
-      <ProjectsList
-        navigation={navigation}
+      <LogIn
         username={username}
         password={password}
         setUsername={setUsername}
         setPassword={setPassword}
-        refetchProjects={refetchProjects}
-        setRefetchProjects={setRefetchProjects}
       />
+      {/* Use a light status bar on iOS to account for the black space above the modal */}
+      <StatusBar style={Platform.OS === "ios" ? "light" : "auto"} />
     </View>
   );
 }

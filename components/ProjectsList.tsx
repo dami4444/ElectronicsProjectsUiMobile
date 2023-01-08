@@ -2,13 +2,13 @@ import axios from "axios";
 import * as WebBrowser from "expo-web-browser";
 import React, { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, TouchableOpacity } from "react-native";
+import { Portal } from "react-native-paper";
 
 import Colors from "../constants/Colors";
 import { RefetchProjectsProps } from "../navigation";
-import DeleteProject from "./DeleteProject";
+import { RootTabScreenProps } from "../types";
 import { AuthProps } from "./LogIn";
 import ProjectTile from "./ProjectTile";
-import { MonoText } from "./StyledText";
 import { Text, View } from "./Themed";
 
 export type ProjectData = {
@@ -29,7 +29,8 @@ export default function ProjectsList({
   password,
   refetchProjects,
   setRefetchProjects,
-}: AuthProps & RefetchProjectsProps) {
+  navigation,
+}: AuthProps & RefetchProjectsProps & RootTabScreenProps<"TabOne">) {
   const [projects, setProjects] = useState<ProjectData[]>([]);
   //projects.push({ author: "test author from js", title: "test1" });
 
@@ -71,6 +72,7 @@ export default function ProjectsList({
         >
           {projects.map((project) => (
             <ProjectTile
+              navigation={navigation}
               key={project.id}
               project={project}
               password={password}

@@ -21,6 +21,7 @@ import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
 import ModalScreen from "../screens/ModalScreen";
 import NotFoundScreen from "../screens/NotFoundScreen";
+import ProjectScreen from "../screens/ProjectScreem";
 import TabOneScreen from "../screens/TabOneScreen";
 import TabTwoScreen from "../screens/TabTwoScreen";
 import {
@@ -118,9 +119,20 @@ function RootNavigator() {
         options={{ title: "Oops!" }}
       />
       <Stack.Group screenOptions={{ presentation: "modal" }}>
-        <Stack.Screen name="Modal">
+        <Stack.Screen name="Logowanie">
           {(props) => (
             <ModalScreen
+              {...props}
+              username={username}
+              password={password}
+              setUsername={setUsername}
+              setPassword={setPassword}
+            />
+          )}
+        </Stack.Screen>
+        <Stack.Screen name="Szczegóły Projektu">
+          {(props) => (
+            <ProjectScreen
               {...props}
               username={username}
               password={password}
@@ -165,7 +177,7 @@ function BottomTabNavigator({
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           headerRight: () => (
             <Pressable
-              onPress={() => navigation.navigate("Modal")}
+              onPress={() => navigation.navigate("Logowanie")}
               style={({ pressed }) => ({
                 opacity: pressed ? 0.5 : 1,
               })}
@@ -199,7 +211,7 @@ function BottomTabNavigator({
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           headerRight: () => (
             <Pressable
-              onPress={() => navigation.navigate("Modal")}
+              onPress={() => navigation.navigate("Logowanie")}
               style={({ pressed }) => ({
                 opacity: pressed ? 0.5 : 1,
               })}

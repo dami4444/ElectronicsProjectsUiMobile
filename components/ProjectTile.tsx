@@ -6,6 +6,7 @@ import { Avatar, Button, Card, Text } from "react-native-paper";
 
 import Colors from "../constants/Colors";
 import { RefetchProjectsProps } from "../navigation";
+import { RootTabScreenProps } from "../types";
 import DeleteProject from "./DeleteProject";
 import { AuthProps } from "./LogIn";
 import { ProjectData } from "./ProjectsList";
@@ -19,7 +20,10 @@ export default function ProjectTile({
   refetchProjects,
   setRefetchProjects,
   project,
-}: AuthProps & RefetchProjectsProps & { project: ProjectData }) {
+  navigation,
+}: AuthProps &
+  RefetchProjectsProps &
+  RootTabScreenProps<"TabOne"> & { project: ProjectData }) {
   return (
     <Card style={[styles.projectsListItem]}>
       <Card.Content>
@@ -43,7 +47,7 @@ export default function ProjectTile({
       </Card.Content>
       <Card.Actions>
         <DeleteProject
-          id={project.id}
+          project={project}
           username={username}
           password={password}
           setUsername={setUsername}
@@ -52,7 +56,9 @@ export default function ProjectTile({
           setRefetchProjects={setRefetchProjects}
         />
 
-        <Button>Zobacz więcej</Button>
+        <Button onPress={() => navigation.navigate("Szczegóły Projektu")}>
+          Zobacz więcej
+        </Button>
       </Card.Actions>
     </Card>
   );
