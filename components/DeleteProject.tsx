@@ -131,6 +131,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   modalStyle: {
-    margin: 40,
+    margin: 30,
+    minWidth: 200,
   },
 });

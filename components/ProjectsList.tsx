@@ -1,7 +1,12 @@
 import axios from "axios";
 import * as WebBrowser from "expo-web-browser";
 import React, { useEffect, useState } from "react";
-import { ScrollView, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  ActivityIndicator,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 import { Portal } from "react-native-paper";
 
 import Colors from "../constants/Colors";
@@ -70,19 +75,23 @@ export default function ProjectsList({
           darkColor="rgba(255,255,255,0.05)"
           lightColor="rgba(0,0,0,0.05)"
         >
-          {projects.map((project) => (
-            <ProjectTile
-              navigation={navigation}
-              key={project.id}
-              project={project}
-              password={password}
-              setPassword={setPassword}
-              username={username}
-              setUsername={setUsername}
-              refetchProjects={refetchProjects}
-              setRefetchProjects={setRefetchProjects}
-            />
-          ))}
+          {refetchProjects ? (
+            <ActivityIndicator animating={true} />
+          ) : (
+            projects.map((project) => (
+              <ProjectTile
+                navigation={navigation}
+                key={project.id}
+                project={project}
+                password={password}
+                setPassword={setPassword}
+                username={username}
+                setUsername={setUsername}
+                refetchProjects={refetchProjects}
+                setRefetchProjects={setRefetchProjects}
+              />
+            ))
+          )}
         </ScrollView>
       </View>
     </View>

@@ -4,7 +4,7 @@
  *
  */
 import { FontAwesome } from "@expo/vector-icons";
-import AsyncStorage from "@react-native-community/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import {
   NavigationContainer,
@@ -138,6 +138,8 @@ function RootNavigator() {
               password={password}
               setUsername={setUsername}
               setPassword={setPassword}
+              refetchProjects={refetchProjects}
+              setRefetchProjects={setRefetchProjects}
             />
           )}
         </Stack.Screen>

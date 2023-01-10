@@ -2,7 +2,14 @@ import axios from "axios";
 import * as WebBrowser from "expo-web-browser";
 import React, { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
-import { Avatar, Button, Card, Text } from "react-native-paper";
+import {
+  ActivityIndicator,
+  Avatar,
+  Button,
+  Card,
+  ProgressBar,
+  Text,
+} from "react-native-paper";
 
 import Colors from "../constants/Colors";
 import { RefetchProjectsProps } from "../navigation";
@@ -19,11 +26,55 @@ export default function ProjectTile({
   password,
   refetchProjects,
   setRefetchProjects,
-  project,
-  navigation,
-}: AuthProps &
-  RefetchProjectsProps &
-  RootTabScreenProps<"TabOne"> & { project: ProjectData }) {
+  projectId,
+}: AuthProps & RefetchProjectsProps & { projectId: number }) {
+  const [project, setProject] = useState<ProjectData | undefined>(undefined);
+  const [file, setFile] = useState<any>(undefined);
+
+  const findProject = (projects: ProjectData[]) =>
+    projects.find((project) => projectId === project.id);
+
+  useEffect(() => {
+    if (refetchProjects) {
+      axios
+        .get<ProjectData[]>("http://localhost:5555/projects")
+        .then(function (response) {
+          setProject(findProject(response.data));
+          setRefetchProjects(false);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+
+      axios
+        .get(`http://localhost:5555/file/${projectId}`)
+        .then(function (response) {
+          setFile(response.data);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
+  }, [refetchProjects]);
+
+  console.log("project", project, projectId, "file", file);
+
+  if (refetchProjects) {
+    return <ActivityIndicator animating={true} />;
+  }
+
+  if (!project) {
+    return (
+      <Card style={[styles.projectsListItem]}>
+        <Card.Content>
+          <Text variant="titleMedium">
+            Projekt o id {projectId} nie występuje w bazie danych.
+          </Text>
+        </Card.Content>
+      </Card>
+    );
+  }
+
   return (
     <Card style={[styles.projectsListItem]}>
       <Card.Content>
@@ -56,14 +107,7 @@ export default function ProjectTile({
           setRefetchProjects={setRefetchProjects}
         />
 
-        <Button
-          onPress={() => {
-            setRefetchProjects(true);
-            navigation.navigate("Szczegóły Projektu", {
-              projectId: project.id,
-            });
-          }}
-        >
+        <Button onPress={() => navigation.navigate("Szczegóły Projektu")}>
           Zobacz więcej
         </Button>
       </Card.Actions>
