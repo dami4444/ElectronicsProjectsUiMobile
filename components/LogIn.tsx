@@ -4,6 +4,7 @@ import * as WebBrowser from "expo-web-browser";
 import React, { useState } from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { Button, TextInput } from "react-native-paper";
+import { axiosBaseUrl } from "../constants/AxiosBaseUrl";
 
 import Colors from "../constants/Colors";
 import { passwordStorageKey, usernameStorageKey } from "../navigation";
@@ -52,7 +53,7 @@ export default function LogIn({
     console.log("typedUsername", typedUsername, "typedPassword", typedPassword);
 
     axios
-      .get(`http://localhost:5555/admin/check`, {
+      .get(axiosBaseUrl + `admin/check`, {
         auth: {
           username: typedUsername,
           password: typedPassword,
@@ -72,7 +73,7 @@ export default function LogIn({
   const handleReauth = () => {
     axios
       .post(
-        `http://localhost:5555/admin/reauth`,
+        axiosBaseUrl + `admin/reauth`,
         {
           login: typedUsername,
           password: typedPassword,

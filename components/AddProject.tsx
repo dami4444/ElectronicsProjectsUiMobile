@@ -1,7 +1,7 @@
 import axios from "axios";
 import * as WebBrowser from "expo-web-browser";
 import React, { useRef, useState } from "react";
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 import * as DocumentPicker from "expo-document-picker";
 
 import Colors from "../constants/Colors";
@@ -10,6 +10,7 @@ import { Text, View } from "./Themed";
 import { AuthProps } from "./LogIn";
 import { RefetchProjectsProps } from "../navigation";
 import { Button, Switch, TextInput } from "react-native-paper";
+import { axiosBaseUrl } from "../constants/AxiosBaseUrl";
 
 export default function AddProject({
   setUsername,
@@ -22,11 +23,11 @@ export default function AddProject({
   // const USERNAME = "fesz";
   // const PASSWORD = "admin";
 
-  const titleRef = useRef<TextInput>(null);
-  const authorRef = useRef<TextInput>(null);
-  const dateRef = useRef<TextInput>(null);
-  const isDiplomaRef = useRef<Switch>(null);
-  const categoryRef = useRef<TextInput>(null);
+  const titleRef = useRef(null);
+  const authorRef = useRef(null);
+  const dateRef = useRef(null);
+  const isDiplomaRef = useRef(null);
+  const categoryRef = useRef(null);
 
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
@@ -37,24 +38,33 @@ export default function AddProject({
 
   const [file, setFile] = useState<DocumentPicker.DocumentResult | null>(null);
   const pickFile = async () => {
-    const res = await DocumentPicker.getDocumentAsync();
+    const res = await DocumentPicker.getDocumentAsync({
+      copyToCacheDirectory: false,
+    });
     setFile(res);
   };
 
   // console.log("state", title, author, isDiploma);
 
-  const handleFormSubmit = () => {
-    // const data = {
-    //   id: 3,
-    //   title: "JS_TEST2",
-    //   author: "Damian",
-    //   date: 2022,
-    //   academic_year: 2022,
-    //   is_diploma: false,
-    //   category: "application",
-    //   files_names: "",
-    // };
+  // const dataURItoBlob = async (dataURI: string) => {
+  //   const response = await fetch(dataURI);
+  //   const blob = await response.blob();
+  //   const blobText = await blob.text();
+  //   console.log("blobText", blobText);
+  //   return blob;
+  // };
 
+  // const URItoBlob = (dataURI: string) => {
+  //   const mime = dataURI.split(",")[0].split(":")[1].split(";")[0];
+  //   const binary = atob(dataURI.split(",")[1]);
+  //   const array = [];
+  //   for (let i = 0; i < binary.length; i++) {
+  //     array.push(binary.charCodeAt(i));
+  //   }
+  //   return new Blob([new Uint8Array(array)], { type: mime });
+  // };
+
+  const handleFormSubmit = async () => {
     const data = {
       id: 1,
       title: title,
@@ -66,21 +76,32 @@ export default function AddProject({
       // files_names: "",
     };
 
-    //@ts-ignore
-    // let filenameParam = encodeURIComponent(1);
-    // filenameParam += encodeURIComponent("/");
-    // filenameParam += encodeURIComponent(file.name);
-
-    //var file = document.querySelector("#file");
-
     const formData = new FormData();
 
-    //@ts-ignore
-    if (file.file) formData.append("file", file.file);
+    if (file && file.type === "success") {
+      if (file.file) {
+        formData.append("file", file.file);
+      } else {
+        formData.append("file", {
+          name: file.name,
+          type: file.mimeType,
+          uri:
+            Platform.OS === "android"
+              ? file.uri
+              : file.uri.replace("file://", ""),
+        } as any);
+      }
+    }
     formData.append("json", JSON.stringify(data));
 
+    // console.log("file", file);
+    //@ts-ignore
+    // console.log("file.file", file?.file || "file.file is undefined");
+
+    console.log("formData", formData);
+
     axios
-      .post("http://localhost:5555/admin/add_mp", formData, {
+      .post(axiosBaseUrl + "admin/add_mp", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -115,12 +136,6 @@ export default function AddProject({
 
   return (
     <View>
-      {/* <form
-        id="uploadForm"
-        action="http://localhost:5555/admin/add_mp"
-        role="form"
-        method="post"
-      > */}
       <View style={styles.form}>
         <View
           style={styles.textInputView}
@@ -189,7 +204,6 @@ export default function AddProject({
         <View style={styles.filePicker}>
           <Button
             onPress={pickFile}
-            title="Wybierz plik"
             // color="#841584"
           >
             Wybierz plik projektu
@@ -208,7 +222,6 @@ export default function AddProject({
             <Button
               mode="contained"
               onPress={handleFormSubmit}
-              text="Dodaj Projekt"
               color="#841584"
               // accessibilityLabel="Learn more about this purple button"
             >

@@ -1,7 +1,13 @@
 import axios from "axios";
 import * as WebBrowser from "expo-web-browser";
-import React, { useEffect, useState } from "react";
-import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import {
+  Linking,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import {
   ActivityIndicator,
   Avatar,
@@ -9,8 +15,8 @@ import {
   Card,
   ProgressBar,
   Text,
+  Tooltip,
 } from "react-native-paper";
-
 import Colors from "../constants/Colors";
 import { RefetchProjectsProps } from "../navigation";
 import { RootTabScreenProps } from "../types";
@@ -18,6 +24,8 @@ import DeleteProject from "./DeleteProject";
 import { AuthProps } from "./LogIn";
 import { ProjectData } from "./ProjectsList";
 import { MonoText } from "./StyledText";
+import * as FileSystem from "expo-file-system";
+import { axiosBaseUrl } from "../constants/AxiosBaseUrl";
 
 export default function ProjectTile({
   setUsername,
@@ -37,7 +45,7 @@ export default function ProjectTile({
   useEffect(() => {
     if (refetchProjects) {
       axios
-        .get<ProjectData[]>("http://localhost:5555/projects")
+        .get<ProjectData[]>(axiosBaseUrl + "projects")
         .then(function (response) {
           setProject(findProject(response.data));
           setRefetchProjects(false);
@@ -47,7 +55,7 @@ export default function ProjectTile({
         });
 
       axios
-        .get(`http://localhost:5555/file/${projectId}`)
+        .get(axiosBaseUrl + `file/${projectId}`)
         .then(function (response) {
           setFile(response.data);
         })
@@ -58,6 +66,14 @@ export default function ProjectTile({
   }, [refetchProjects]);
 
   console.log("project", project, projectId, "file", file);
+
+  const openFile = async () => {
+    await Linking.openURL(axiosBaseUrl + `file/${projectId}`);
+  };
+
+  const buttonRef = useRef<View | null>(null);
+
+  console.log("buttonRef", buttonRef);
 
   if (refetchProjects) {
     return <ActivityIndicator animating={true} />;
@@ -95,6 +111,10 @@ export default function ProjectTile({
         <Text variant="labelMedium">
           Kategoria: <Text variant="bodyMedium">{project.category}</Text>
         </Text>
+        <Text variant="labelMedium">
+          Nazwa pliku:{" "}
+          <Text variant="bodyMedium">{project.internal_filename}</Text>
+        </Text>
       </Card.Content>
       <Card.Actions>
         <DeleteProject
@@ -106,10 +126,21 @@ export default function ProjectTile({
           refetchProjects={refetchProjects}
           setRefetchProjects={setRefetchProjects}
         />
-
-        <Button onPress={() => navigation.navigate("Szczegóły Projektu")}>
-          Zobacz więcej
-        </Button>
+        {file ? (
+          <Button onPress={() => openFile()}>Otwórz plik</Button>
+        ) : (
+          <Tooltip
+            enterTouchDelay={150}
+            leaveTouchDelay={3000}
+            title="Błąd - pliku nie ma w bazie danych"
+          >
+            <TouchableOpacity>
+              <Button disabled onPress={() => openFile()}>
+                Otwórz plik
+              </Button>
+            </TouchableOpacity>
+          </Tooltip>
+        )}
       </Card.Actions>
     </Card>
   );

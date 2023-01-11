@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Portal } from "react-native-paper";
+import { axiosBaseUrl } from "../constants/AxiosBaseUrl";
 
 import Colors from "../constants/Colors";
 import { RefetchProjectsProps } from "../navigation";
@@ -42,7 +43,7 @@ export default function ProjectsList({
   useEffect(() => {
     if (refetchProjects) {
       axios
-        .get<ProjectData[]>("http://localhost:5555/projects")
+        .get<ProjectData[]>(axiosBaseUrl + "projects")
         .then(function (response) {
           console.log("response", response);
           setProjects(response.data);

@@ -3,6 +3,7 @@ import * as WebBrowser from "expo-web-browser";
 import React from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { Button, Card, Modal, Portal, Text } from "react-native-paper";
+import { axiosBaseUrl } from "../constants/AxiosBaseUrl";
 
 import Colors from "../constants/Colors";
 import { RefetchProjectsProps } from "../navigation";
@@ -33,7 +34,7 @@ export default function DeleteProject({
 
   const handleDeleteProject = () => {
     axios
-      .delete(`http://localhost:5555/admin/delete/${project.id}`, {
+      .delete(axiosBaseUrl + `admin/delete/${project.id}`, {
         auth: {
           username: username,
           password: password,

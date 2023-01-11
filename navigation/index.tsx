@@ -30,6 +30,7 @@ import {
   RootTabScreenProps,
 } from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
+import "../helpers/base64Polyfill";
 
 export const usernameStorageKey = "username";
 export const passwordStorageKey = "password";
