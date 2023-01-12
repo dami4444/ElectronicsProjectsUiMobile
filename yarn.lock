@@ -9897,6 +9897,11 @@ react-native-gradle-plugin@^0.0.6:
   resolved "https://registry.npmjs.org/react-native-gradle-plugin/-/react-native-gradle-plugin-0.0.6.tgz"
   integrity sha512-eIlgtsmDp1jLC24dRn43hB3kEcZVqx6DUQbR0N1ABXGnMEafm9I3V3dUUeD1vh+Dy5WqijSoEwLNUPLgu5zDMg==
 
+react-native-paper-select@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/react-native-paper-select/-/react-native-paper-select-0.4.0.tgz#e2c370e3116de289a286c035b37da4515f6f74ea"
+  integrity sha512-P/jTk7+38M7t/CGMJF2pMHW0gigHJEsyMNesQHWbE793Y2M9bZBx0qr27dLnzkmCFW66xPHVZQmj3mQJEKgWng==
+
 react-native-paper-toast@^1.2.3:
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/react-native-paper-toast/-/react-native-paper-toast-1.2.3.tgz#5f9ce58cf51762ef489bec7e282eb61bff375aeb"

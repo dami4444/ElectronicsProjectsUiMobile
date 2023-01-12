@@ -1,11 +1,16 @@
 import { FontAwesome } from "@expo/vector-icons";
-import React from "react";
+import { useLinkTo } from "@react-navigation/native";
+import axios from "axios";
+import React, { useEffect } from "react";
 import { StyleSheet, TouchableOpacity, useColorScheme } from "react-native";
 import { Button, Card, Modal, Portal } from "react-native-paper";
+import { useToast } from "react-native-paper-toast";
+import { axiosBaseUrl } from "../constants/AxiosBaseUrl";
 
 import Colors from "../constants/Colors";
 import { RefetchProjectsProps } from "../navigation";
 import { Text, View } from "./Themed";
+import { PaperSelect } from 'react-native-paper-select';
 
 export type ProjectData = {
   id: number;
@@ -49,7 +54,7 @@ export type SortProps = {
   setOrderBy: (orderBy: OrderBy) => void;
 };
 
-export default function ProjectsListSort({
+export default function ProjectsListFilter({
   sortProps,
   refetchProjects,
   setRefetchProjects,
@@ -57,9 +62,12 @@ export default function ProjectsListSort({
   const colorScheme = useColorScheme();
 
   const [visible, setVisible] = React.useState(false);
+  const [categories, setCategories] = React.useState<string[]>([]);
 
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
+
+  const toaster = useToast();
 
   const toggleOrderBy = () => {
     const { sortBy, orderBy, setOrderBy } = sortProps;
@@ -76,6 +84,20 @@ export default function ProjectsListSort({
     if (orderBy === "desc") return "sort-down";
   };
 
+  useEffect(() => {
+    axios
+      .get(axiosBaseUrl + "categories")
+      .then(function (response) {
+        setCategories(response.data);
+      })
+      .catch(function (error) {
+        toaster.show({
+          message: error.message || "Bład pobierania listy kategorii.",
+          type: "error",
+        });
+      });
+  }, [refetchProjects]);
+
   return (
     <>
       <Portal>
@@ -87,8 +109,10 @@ export default function ProjectsListSort({
           <Card>
             <Card.Content style={styles.sortModal}>
               <Text variant="bodyMedium">
-                Wybierz po czym sortować listę projektów.
+                Wybierz jak filtrować liste projektów.
               </Text>
+
+             <
             </Card.Content>
             <Card.Actions>
               <Button
@@ -137,24 +161,18 @@ export default function ProjectsListSort({
           </Card>
         </Modal>
       </Portal>
-      <View style={styles.getStartedContainer}>
-        <TouchableOpacity onPress={() => toggleOrderBy()}>
-          <FontAwesome
-            name={getSortIconName()}
-            size={25}
-            color={Colors[colorScheme || "dark"].text}
-            style={{ marginRight: 15 }}
-          />
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={() => showModal()}>
-          <Text>
-            {sortProps.sortBy
-              ? SortByDisplayedValues[`${sortProps.sortBy}`]
-              : "Sortowanie"}
-          </Text>
-        </TouchableOpacity>
-      </View>
+      <TouchableOpacity
+        style={styles.getStartedContainer}
+        onPress={() => showModal()}
+      >
+        <FontAwesome
+          name="search"
+          size={25}
+          color={Colors[colorScheme || "dark"].text}
+          style={{ marginRight: 15 }}
+        />
+        <Text>Filtorowanie</Text>
+      </TouchableOpacity>
     </>
   );
 }

@@ -5,6 +5,7 @@ import { Portal } from "react-native-paper";
 import EditScreenInfo from "../components/EditScreenInfo";
 import { AuthProps } from "../components/LogIn";
 import ProjectsList from "../components/ProjectsList";
+import ProjectsListFilter from "../components/ProjectsListFilter";
 import ProjectsListSort, {
   OrderBy,
   SortByValues,
@@ -49,8 +50,12 @@ export default function TabOneScreen({
     <Portal.Host>
       <View style={styles.container}>
         <View style={styles.titleAndSort}>
-          <Text style={styles.hiddenTitle}>Lista Projektów</Text>
-          <Text style={styles.title}>Lista Projektów</Text>
+          <ProjectsListFilter
+            sortProps={sortProps}
+            refetchProjects={refetchProjects}
+            setRefetchProjects={setRefetchProjects}
+          />
+          {/* <Text style={styles.title}>Lista Projektów</Text> */}
           <ProjectsListSort
             sortProps={sortProps}
             refetchProjects={refetchProjects}
@@ -87,7 +92,6 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     justifyContent: "center",
-    gap: 16,
   },
   title: {
     textAlign: "center",
