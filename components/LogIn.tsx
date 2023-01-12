@@ -4,6 +4,7 @@ import * as WebBrowser from "expo-web-browser";
 import React, { useState } from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { Button, TextInput } from "react-native-paper";
+import { useToast } from "react-native-paper-toast";
 import { axiosBaseUrl } from "../constants/AxiosBaseUrl";
 
 import Colors from "../constants/Colors";
@@ -29,12 +30,13 @@ export default function LogIn({
 
   const isLoggedIn = !!username && !!password;
 
+  const toaster = useToast();
+
   const handleLogout = () => {
     const clearCredentials = async () => {
       try {
         await AsyncStorage.setItem(usernameStorageKey, "");
         await AsyncStorage.setItem(passwordStorageKey, "");
-        console.log("Cleared credentials");
       } catch (error) {
         console.error("Error clearing credentials");
       }
@@ -46,12 +48,6 @@ export default function LogIn({
   };
 
   const handleLogin = () => {
-    // const auth = {
-    //   login: typedUsername,
-    //   password: typedPassword,
-    // };
-    console.log("typedUsername", typedUsername, "typedPassword", typedPassword);
-
     axios
       .get(axiosBaseUrl + `admin/check`, {
         auth: {
@@ -60,12 +56,14 @@ export default function LogIn({
         },
       })
       .then(function (response) {
-        console.log(response);
         setUsername(typedUsername);
         setPassword(typedPassword);
       })
       .catch(function (error) {
-        console.log(error);
+        toaster.show({
+          message: error.message || "Bład podczas logowania.",
+          type: "error",
+        });
         //TODO: Add toast with error
       });
   };
@@ -86,13 +84,18 @@ export default function LogIn({
         }
       )
       .then(function (response) {
-        console.log(response);
         setUsername(typedUsername);
         setPassword(typedPassword);
+        toaster.show({
+          message: "Pomyślnie zmieniono dane logowania.",
+          type: "success",
+        });
       })
       .catch(function (error) {
-        console.log(error);
-        //TODO: Add toast with error
+        toaster.show({
+          message: error.message || "Bład podczas zmiany danych autoryzacji.",
+          type: "error",
+        });
       });
   };
 

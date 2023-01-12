@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Portal } from "react-native-paper";
+import { useToast } from "react-native-paper-toast";
 import { axiosBaseUrl } from "../constants/AxiosBaseUrl";
 
 import Colors from "../constants/Colors";
@@ -38,19 +39,23 @@ export default function ProjectsList({
   navigation,
 }: AuthProps & RefetchProjectsProps & RootTabScreenProps<"TabOne">) {
   const [projects, setProjects] = useState<ProjectData[]>([]);
-  //projects.push({ author: "test author from js", title: "test1" });
+
+  const toaster = useToast();
 
   useEffect(() => {
     if (refetchProjects) {
       axios
         .get<ProjectData[]>(axiosBaseUrl + "projects")
         .then(function (response) {
-          console.log("response", response);
           setProjects(response.data);
           setRefetchProjects(false);
         })
         .catch(function (error) {
           console.log(error);
+          toaster.show({
+            message: error.message || "Bład pobierania listy projektów.",
+            type: "error",
+          });
         });
     }
   }, [refetchProjects]);

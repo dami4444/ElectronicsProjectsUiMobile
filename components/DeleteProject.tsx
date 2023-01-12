@@ -3,6 +3,7 @@ import * as WebBrowser from "expo-web-browser";
 import React from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { Button, Card, Modal, Portal, Text } from "react-native-paper";
+import { useToast } from "react-native-paper-toast";
 import { axiosBaseUrl } from "../constants/AxiosBaseUrl";
 
 import Colors from "../constants/Colors";
@@ -32,6 +33,8 @@ export default function DeleteProject({
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
 
+  const toaster = useToast();
+
   const handleDeleteProject = () => {
     axios
       .delete(axiosBaseUrl + `admin/delete/${project.id}`, {
@@ -41,10 +44,18 @@ export default function DeleteProject({
         },
       })
       .then(function (response) {
-        console.log(response);
         setRefetchProjects(true);
+        toaster.show({
+          message: `Usunięto projekt ${project.title}.`,
+          type: "success",
+        });
       })
-      .catch(function (error) {});
+      .catch(function (error) {
+        toaster.show({
+          message: error.message || "Bład usuwania projektu.",
+          type: "error",
+        });
+      });
   };
 
   const isLoggedIn = !!username && !!password;

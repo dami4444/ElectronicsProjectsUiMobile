@@ -11,6 +11,7 @@ import { AuthProps } from "./LogIn";
 import { RefetchProjectsProps } from "../navigation";
 import { Button, Switch, TextInput } from "react-native-paper";
 import { axiosBaseUrl } from "../constants/AxiosBaseUrl";
+import { useToast } from "react-native-paper-toast";
 
 export default function AddProject({
   setUsername,
@@ -43,6 +44,8 @@ export default function AddProject({
     setFile(res);
   };
 
+  const toaster = useToast();
+
   const handleFormSubmit = async () => {
     const data = {
       id: 1,
@@ -73,8 +76,6 @@ export default function AddProject({
     }
     formData.append("json", JSON.stringify(data));
 
-    console.log("formData", formData);
-
     axios
       .post(axiosBaseUrl + "admin/add_mp", formData, {
         headers: {
@@ -86,11 +87,17 @@ export default function AddProject({
         },
       })
       .then(function (response) {
-        console.log(response);
         setRefetchProjects(true);
+        toaster.show({
+          message: "Projekt dodany pomyślnie.",
+          type: "success",
+        });
       })
       .catch(function (error) {
-        console.log(error);
+        toaster.show({
+          message: error.message || "Bład podczas dodawania projektu.",
+          type: "error",
+        });
       });
   };
 

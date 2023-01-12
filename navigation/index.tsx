@@ -70,7 +70,6 @@ function RootNavigator() {
     try {
       await AsyncStorage.setItem(usernameStorageKey, username);
       await AsyncStorage.setItem(passwordStorageKey, password);
-      console.log("Saved credentials");
     } catch (error) {
       console.error("Error saving credentials");
     }

@@ -5,6 +5,7 @@ import useCachedResources from "./hooks/useCachedResources";
 import useColorScheme from "./hooks/useColorScheme";
 import Navigation from "./navigation";
 import { Provider as PaperProvider } from "react-native-paper";
+import { ToastProvider } from "react-native-paper-toast";
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
@@ -14,12 +15,14 @@ export default function App() {
     return null;
   } else {
     return (
-      <PaperProvider>
-        <SafeAreaProvider>
-          <Navigation colorScheme={colorScheme} />
-          <StatusBar />
-        </SafeAreaProvider>
-      </PaperProvider>
+      <SafeAreaProvider>
+        <PaperProvider>
+          <ToastProvider>
+            <Navigation colorScheme={colorScheme} />
+            <StatusBar />
+          </ToastProvider>
+        </PaperProvider>
+      </SafeAreaProvider>
     );
   }
 }

@@ -33,6 +33,7 @@ import { ProjectData } from "./ProjectsList";
 import { MonoText } from "./StyledText";
 import * as FileSystem from "expo-file-system";
 import { axiosBaseUrl } from "../constants/AxiosBaseUrl";
+import { useToast } from "react-native-paper-toast";
 
 export default function ProjectTile({
   setUsername,
@@ -46,6 +47,8 @@ export default function ProjectTile({
   const [project, setProject] = useState<ProjectData | undefined>(undefined);
   const [file, setFile] = useState<any>(undefined);
 
+  const toaster = useToast();
+
   const findProject = (projects: ProjectData[]) =>
     projects.find((project) => projectId === project.id);
 
@@ -58,7 +61,10 @@ export default function ProjectTile({
           setRefetchProjects(false);
         })
         .catch(function (error) {
-          console.log(error);
+          toaster.show({
+            message: error.message || "Bład podczas danych projektu.",
+            type: "error",
+          });
         });
 
       axios
@@ -67,20 +73,17 @@ export default function ProjectTile({
           setFile(response.data);
         })
         .catch(function (error) {
-          console.log(error);
+          toaster.show({
+            message: error.message || "Bład pobierania pliku projektu.",
+            type: "error",
+          });
         });
     }
   }, [refetchProjects]);
 
-  console.log("project", project, projectId, "file", file);
-
   const openFile = async () => {
     await Linking.openURL(axiosBaseUrl + `file/${projectId}`);
   };
-
-  const buttonRef = useRef<View | null>(null);
-
-  console.log("buttonRef", buttonRef);
 
   const OpenURLButton = ({
     url,
