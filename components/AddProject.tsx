@@ -25,6 +25,7 @@ export default function AddProject({
   const dateRef = useRef(null);
   const isDiplomaRef = useRef(null);
   const categoryRef = useRef(null);
+  // const linkRef = useRef(null);
 
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
@@ -32,6 +33,7 @@ export default function AddProject({
   const [isDiploma, setIsDiploma] = useState(false);
   const toggleIsDiploma = () => setIsDiploma((previousState) => !previousState);
   const [category, setCategory] = useState("");
+  // const [link, setLink] = useState("");
 
   const [file, setFile] = useState<DocumentPicker.DocumentResult | null>(null);
   const pickFile = async () => {
@@ -50,7 +52,7 @@ export default function AddProject({
       academic_year: date,
       is_diploma: isDiploma,
       category: category,
-      // files_names: "",
+      // files_names: linkRef,
     };
 
     const formData = new FormData();
@@ -70,10 +72,6 @@ export default function AddProject({
       }
     }
     formData.append("json", JSON.stringify(data));
-
-    // console.log("file", file);
-    //@ts-ignore
-    // console.log("file.file", file?.file || "file.file is undefined");
 
     console.log("formData", formData);
 
@@ -142,6 +140,13 @@ export default function AddProject({
           ref={categoryRef}
           onChangeText={(text) => setCategory(text)}
         />
+
+        {/* <TextInput
+          style={styles.textInputView}
+          label="Link do plików"
+          ref={linkRef}
+          onChangeText={(text) => setLink(text)}
+        /> */}
 
         <View style={styles.formLineSwitch}>
           <Text>Projekt dyplomowy:</Text>
@@ -220,18 +225,13 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   formLineSwitch: {
-    // padding: 4,
-    // textAlign: "left",
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
     margin: 8,
-
-    // alignContent: "center",
   },
   switch: {
-    // marginTop: 2,
     marginLeft: 4,
   },
   filePicker: {

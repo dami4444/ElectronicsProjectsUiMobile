@@ -1,7 +1,14 @@
 import axios from "axios";
 import * as WebBrowser from "expo-web-browser";
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+  ReactNode,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import {
+  Alert,
   Linking,
   ScrollView,
   StyleSheet,
@@ -75,6 +82,29 @@ export default function ProjectTile({
 
   console.log("buttonRef", buttonRef);
 
+  const OpenURLButton = ({
+    url,
+    children,
+  }: {
+    url: string;
+    children: ReactNode;
+  }) => {
+    const handlePress = useCallback(async () => {
+      // Checking if the link is supported for links with custom URL scheme.
+      const supported = await Linking.canOpenURL(url);
+
+      if (supported) {
+        // Opening the link with some app, if the URL scheme is "http" the web link should be opened
+        // by some browser in the mobile
+        await Linking.openURL(url);
+      } else {
+        Alert.alert(`Nieprawidłowy URL: ${url}`);
+      }
+    }, [url]);
+
+    return <Button onPress={handlePress}>{children}</Button>;
+  };
+
   if (refetchProjects) {
     return <ActivityIndicator animating={true} />;
   }
@@ -83,7 +113,7 @@ export default function ProjectTile({
     return (
       <Card style={[styles.projectsListItem]}>
         <Card.Content>
-          <Text variant="titleMedium">
+          <Text variant="titleLarge">
             Projekt o id {projectId} nie występuje w bazie danych.
           </Text>
         </Card.Content>
@@ -94,26 +124,42 @@ export default function ProjectTile({
   return (
     <Card style={[styles.projectsListItem]}>
       <Card.Content>
-        <Text variant="titleMedium">{project.title}</Text>
-        <View style={[styles.textLine]}>
-          <Text variant="labelMedium">
-            Autor: <Text variant="bodyMedium">{project.author}</Text>
-          </Text>
-          <Text variant="labelSmall">
-            {project.is_diploma ? "Projekt dyplomowy" : ""}
-          </Text>
-        </View>
+        <Text style={styles.textLine} variant="titleLarge">
+          {project.title}
+        </Text>
 
-        <Text variant="labelMedium">
+        <Text style={styles.textLine} variant="labelLarge">
+          Autor: <Text variant="bodyLarge">{project.author}</Text>
+        </Text>
+
+        <Text style={styles.textLine} variant="labelLarge">
           Rok akademicki:{" "}
-          <Text variant="bodyMedium">{project.academic_year}</Text>
+          <Text variant="bodyLarge">{project.academic_year}</Text>
         </Text>
-        <Text variant="labelMedium">
-          Kategoria: <Text variant="bodyMedium">{project.category}</Text>
+        <Text style={styles.textLine} variant="labelLarge">
+          Kategoria: <Text variant="bodyLarge">{project.category}</Text>
         </Text>
-        <Text variant="labelMedium">
+        <Text style={styles.textLine} variant="labelLarge">
+          Projekt dyplomowy:{" "}
+          <Text variant="bodyLarge">{project.is_diploma ? "Tak" : "Nie"}</Text>
+        </Text>
+        <Text style={styles.textLine} variant="labelLarge">
           Nazwa pliku:{" "}
-          <Text variant="bodyMedium">{project.internal_filename}</Text>
+          <Text variant="bodyLarge">{project.internal_filename}</Text>
+        </Text>
+        {/* {project.files_link && (
+          <Text style={styles.textLine} variant="labelLarge">
+            Link do plików:{" "}
+            <Text variant="bodyLarge">{project.files_link}</Text>
+            {OpenURLButton({
+              url: project.files_link,
+              children: project.files_link,
+            })}
+          </Text>
+        )} */}
+
+        <Text variant="labelSmall">
+          {project.is_diploma ? "Projekt dyplomowy" : ""}
         </Text>
       </Card.Content>
       <Card.Actions>
@@ -185,9 +231,6 @@ const styles = StyleSheet.create({
     marginLeft: "10%",
   },
   textLine: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    gap: 16,
+    margin: 2,
   },
 });
