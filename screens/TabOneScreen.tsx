@@ -41,10 +41,10 @@ export default function TabOneScreen({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
     justifyContent: "center",
   },
   title: {
+    textAlign: "center",
     fontSize: 20,
     fontWeight: "bold",
   },
@@ -52,5 +52,6 @@ const styles = StyleSheet.create({
     marginVertical: 30,
     height: 1,
     width: "80%",
+    marginLeft: "10%",
   },
 });

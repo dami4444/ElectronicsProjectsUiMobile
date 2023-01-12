@@ -58,20 +58,8 @@ export default function ProjectsList({
   return (
     <View>
       <View style={styles.getStartedContainer}>
-        <Text
-          style={styles.getStartedText}
-          lightColor="rgba(0,0,0,0.8)"
-          darkColor="rgba(255,255,255,0.8)"
-        >
-          Poniżej znajduje się lista projektów obecnych w bazie danych:
-        </Text>
-
         <ScrollView
-          style={[
-            styles.codeHighlightContainer,
-            styles.homeScreenFilename,
-            styles.projectsList,
-          ]}
+          style={[styles.projectsList]}
           //@ts-ignore
           darkColor="rgba(255,255,255,0.05)"
           lightColor="rgba(0,0,0,0.05)"
@@ -110,13 +98,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginHorizontal: 50,
   },
-  homeScreenFilename: {
-    marginVertical: 7,
-  },
-  codeHighlightContainer: {
-    borderRadius: 3,
-    paddingHorizontal: 4,
-  },
+
   getStartedText: {
     fontSize: 17,
     lineHeight: 24,
@@ -134,7 +116,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   projectsList: {
-    height: 400,
+    height: 550,
     display: "flex",
     flexDirection: "column",
   },

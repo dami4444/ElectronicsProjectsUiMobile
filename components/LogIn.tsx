@@ -116,34 +116,22 @@ export default function LogIn({
               darkColor="rgba(255,255,255,0.05)"
               lightColor="rgba(0,0,0,0.05)"
             >
-              <View
-                // style={styles.textInputView}
-                lightColor="rgba(0,0,0,0.8)"
-                darkColor="rgba(255,255,255,0.8)"
-              >
-                <TextInput
-                  label="Login"
-                  // ref={categoryRef}
-                  onChangeText={(text) => setTypedUsername(text)}
-                />
-              </View>
+              <TextInput
+                label="Login"
+                // ref={categoryRef}
+                onChangeText={(text) => setTypedUsername(text)}
+              />
             </View>
             <View
               style={[styles.codeHighlightContainer, styles.homeScreenFilename]}
               darkColor="rgba(255,255,255,0.05)"
               lightColor="rgba(0,0,0,0.05)"
             >
-              <View
-                // style={styles.textInputView}
-                lightColor="rgba(0,0,0,0.8)"
-                darkColor="rgba(255,255,255,0.8)"
-              >
-                <TextInput
-                  label="Hasło"
-                  // ref={categoryRef}
-                  onChangeText={(text) => setTypedPassword(text)}
-                />
-              </View>
+              <TextInput
+                label="Hasło"
+                // ref={categoryRef}
+                onChangeText={(text) => setTypedPassword(text)}
+              />
             </View>
           </>
         )}
@@ -174,34 +162,18 @@ export default function LogIn({
               darkColor="rgba(255,255,255,0.05)"
               lightColor="rgba(0,0,0,0.05)"
             >
-              <View
-                // style={styles.textInputView}
-                lightColor="rgba(0,0,0,0.8)"
-                darkColor="rgba(255,255,255,0.8)"
-              >
-                <TextInput
-                  label="Login"
-                  // ref={categoryRef}
-                  onChangeText={(text) => setTypedUsername(text)}
-                />
-              </View>
+              <TextInput
+                label="Login"
+                onChangeText={(text) => setTypedUsername(text)}
+              />
             </View>
             <View
               style={[styles.codeHighlightContainer, styles.homeScreenFilename]}
-              darkColor="rgba(255,255,255,0.05)"
-              lightColor="rgba(0,0,0,0.05)"
             >
-              <View
-                // style={styles.textInputView}
-                lightColor="rgba(0,0,0,0.8)"
-                darkColor="rgba(255,255,255,0.8)"
-              >
-                <TextInput
-                  label="Hasło"
-                  // ref={categoryRef}
-                  onChangeText={(text) => setTypedPassword(text)}
-                />
-              </View>
+              <TextInput
+                label="Hasło"
+                onChangeText={(text) => setTypedPassword(text)}
+              />
             </View>
             <View style={styles.button}>
               <Button onPress={handleReauth}>Zmień dane logowania</Button>
@@ -213,15 +185,8 @@ export default function LogIn({
   );
 }
 
-function handleHelpPress() {
-  WebBrowser.openBrowserAsync(
-    "https://docs.expo.io/get-started/create-a-new-app/#opening-the-app-on-your-phonetablet"
-  );
-}
-
 const styles = StyleSheet.create({
   getStartedContainer: {
-    alignItems: "center",
     marginHorizontal: 50,
   },
   homeScreenFilename: {
@@ -255,13 +220,12 @@ const styles = StyleSheet.create({
   helpLinkText: {
     textAlign: "center",
   },
-  textInput: {
-    padding: 4,
-    fontSize: 17,
-    lineHeight: 24,
-    textAlign: "left",
+  textInputView: {
+    backgroundColor: "transparent",
   },
   button: {
     margin: 4,
+    width: "50%",
+    marginLeft: "25%",
   },
 });

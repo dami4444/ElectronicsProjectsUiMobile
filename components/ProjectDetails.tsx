@@ -181,7 +181,8 @@ const styles = StyleSheet.create({
   },
   projectsListItem: {
     marginVertical: 5,
-    width: 300,
+    width: "80%",
+    marginLeft: "10%",
   },
   textLine: {
     display: "flex",

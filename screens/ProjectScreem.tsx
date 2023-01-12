@@ -4,7 +4,7 @@ import React from "react";
 import { Platform, StyleSheet } from "react-native";
 
 import EditScreenInfo from "../components/EditScreenInfo";
-import LogIn, { AuthProps } from "../components/LogIn";
+import { AuthProps } from "../components/LogIn";
 import ProjectDetails from "../components/ProjectDetails";
 import { ProjectData } from "../components/ProjectsList";
 import { Text, View } from "../components/Themed";
@@ -53,16 +53,17 @@ export default function ProjectScreen({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
     justifyContent: "center",
   },
   title: {
     fontSize: 20,
+    textAlign: "center",
     fontWeight: "bold",
   },
   separator: {
     marginVertical: 30,
     height: 1,
     width: "80%",
+    marginLeft: "10%",
   },
 });

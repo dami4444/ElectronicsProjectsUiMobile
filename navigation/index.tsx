@@ -177,7 +177,7 @@ function BottomTabNavigator({
         name="TabOne"
         options={({ navigation }: RootTabScreenProps<"TabOne">) => ({
           title: "Lista Projektów",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="list" color={color} />,
           headerRight: () => (
             <Pressable
               onPress={() => navigation.navigate("Logowanie")}
@@ -186,7 +186,7 @@ function BottomTabNavigator({
               })}
             >
               <FontAwesome
-                name="info-circle"
+                name="sign-in"
                 size={25}
                 color={Colors[colorScheme].text}
                 style={{ marginRight: 15 }}
@@ -211,7 +211,7 @@ function BottomTabNavigator({
         name="TabTwo"
         options={({ navigation }: RootTabScreenProps<"TabTwo">) => ({
           title: "Dodaj Projekt",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="plus" color={color} />,
           headerRight: () => (
             <Pressable
               onPress={() => navigation.navigate("Logowanie")}
@@ -220,7 +220,7 @@ function BottomTabNavigator({
               })}
             >
               <FontAwesome
-                name="info-circle"
+                name="sign-in"
                 size={25}
                 color={Colors[colorScheme].text}
                 style={{ marginRight: 15 }}

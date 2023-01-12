@@ -20,9 +20,6 @@ export default function AddProject({
   refetchProjects,
   setRefetchProjects,
 }: AuthProps & RefetchProjectsProps) {
-  // const USERNAME = "fesz";
-  // const PASSWORD = "admin";
-
   const titleRef = useRef(null);
   const authorRef = useRef(null);
   const dateRef = useRef(null);
@@ -43,26 +40,6 @@ export default function AddProject({
     });
     setFile(res);
   };
-
-  // console.log("state", title, author, isDiploma);
-
-  // const dataURItoBlob = async (dataURI: string) => {
-  //   const response = await fetch(dataURI);
-  //   const blob = await response.blob();
-  //   const blobText = await blob.text();
-  //   console.log("blobText", blobText);
-  //   return blob;
-  // };
-
-  // const URItoBlob = (dataURI: string) => {
-  //   const mime = dataURI.split(",")[0].split(":")[1].split(";")[0];
-  //   const binary = atob(dataURI.split(",")[1]);
-  //   const array = [];
-  //   for (let i = 0; i < binary.length; i++) {
-  //     array.push(binary.charCodeAt(i));
-  //   }
-  //   return new Blob([new Uint8Array(array)], { type: mime });
-  // };
 
   const handleFormSubmit = async () => {
     const data = {
@@ -137,72 +114,48 @@ export default function AddProject({
   return (
     <View>
       <View style={styles.form}>
-        <View
+        <TextInput
           style={styles.textInputView}
-          lightColor="rgba(0,0,0,0.8)"
-          darkColor="rgba(255,255,255,0.8)"
-        >
-          <TextInput
-            label="Tytuł"
-            ref={titleRef}
-            onChangeText={(text) => setTitle(text)}
-          />
-        </View>
+          label="Tytuł"
+          ref={titleRef}
+          onChangeText={(text) => setTitle(text)}
+        />
 
-        <View
+        <TextInput
           style={styles.textInputView}
-          lightColor="rgba(0,0,0,0.8)"
-          darkColor="rgba(255,255,255,0.8)"
-        >
-          <TextInput
-            label="Autor"
-            ref={authorRef}
-            onChangeText={(text) => setAuthor(text)}
-          />
-        </View>
+          label="Autor"
+          ref={authorRef}
+          onChangeText={(text) => setAuthor(text)}
+        />
 
-        <View
+        <TextInput
           style={styles.textInputView}
-          lightColor="rgba(0,0,0,0.8)"
-          darkColor="rgba(255,255,255,0.8)"
-        >
-          <TextInput
-            label="Rok akademicki"
-            keyboardType="number-pad"
-            ref={dateRef}
-            onChangeText={(text) => setDate(Number(text))}
-          />
-        </View>
+          label="Rok akademicki"
+          keyboardType="number-pad"
+          ref={dateRef}
+          onChangeText={(text) => setDate(Number(text))}
+        />
 
-        <Text
-          style={styles.formLineSwitch}
-          lightColor="rgba(0,0,0,0.8)"
-          darkColor="rgba(255,255,255,0.8)"
-        >
-          Projekt dyplomowy:
-          <View style={styles.textInputView}>
-            <Switch
-              ref={isDiplomaRef}
-              onValueChange={toggleIsDiploma}
-              value={isDiploma}
-            />
-          </View>
-        </Text>
-
-        <View
+        <TextInput
           style={styles.textInputView}
-          lightColor="rgba(0,0,0,0.8)"
-          darkColor="rgba(255,255,255,0.8)"
-        >
-          <TextInput
-            label="Kategoria"
-            ref={categoryRef}
-            onChangeText={(text) => setCategory(text)}
+          label="Kategoria"
+          ref={categoryRef}
+          onChangeText={(text) => setCategory(text)}
+        />
+
+        <View style={styles.formLineSwitch}>
+          <Text>Projekt dyplomowy:</Text>
+          <Switch
+            style={styles.switch}
+            ref={isDiplomaRef}
+            onValueChange={toggleIsDiploma}
+            value={isDiploma}
           />
         </View>
 
         <View style={styles.filePicker}>
           <Button
+            style={styles.button}
             onPress={pickFile}
             // color="#841584"
           >
@@ -217,18 +170,15 @@ export default function AddProject({
           </Text>
         </View>
 
-        <Text lightColor="rgba(0,0,0,0.8)" darkColor="rgba(255,255,255,0.8)">
-          <View>
-            <Button
-              mode="contained"
-              onPress={handleFormSubmit}
-              color="#841584"
-              // accessibilityLabel="Learn more about this purple button"
-            >
-              Dodaj Projekt
-            </Button>
-          </View>
-        </Text>
+        <Button
+          style={styles.button}
+          mode="contained"
+          onPress={handleFormSubmit}
+          color="#841584"
+          // accessibilityLabel="Learn more about this purple button"
+        >
+          Dodaj Projekt
+        </Button>
       </View>
       {/* </form> */}
     </View>
@@ -245,9 +195,11 @@ const styles = StyleSheet.create({
   form: {
     display: "flex",
     flexDirection: "column",
-    gap: 8,
-    alignItems: "center",
+    alignItems: "stretch",
     marginHorizontal: 50,
+  },
+  textInputView: {
+    margin: 8,
   },
   getStartedContainer: {
     alignItems: "center",
@@ -260,37 +212,34 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     paddingHorizontal: 4,
   },
-  formLine: {
-    padding: 4,
-    fontSize: 17,
-    lineHeight: 24,
-    textAlign: "left",
-  },
+
   fileName: {
     minHeight: 24,
-    fontSize: 17,
     lineHeight: 24,
-    textAlign: "left",
+    textAlign: "center",
+    marginBottom: 8,
   },
   formLineSwitch: {
-    padding: 4,
-    fontSize: 17,
-    lineHeight: 24,
-    textAlign: "left",
+    // padding: 4,
+    // textAlign: "left",
     display: "flex",
-    alignContent: "center",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    margin: 8,
+
+    // alignContent: "center",
   },
-  textInput: {
-    padding: 4,
-    fontSize: 17,
-    lineHeight: 24,
-    textAlign: "left",
-  },
-  textInputView: {
-    margin: 4,
+  switch: {
+    // marginTop: 2,
+    marginLeft: 4,
   },
   filePicker: {
-    marginBottom: 8,
+    marginTop: 0,
+  },
+  button: {
+    width: "50%",
+    marginLeft: "25%",
   },
 
   helpContainer: {
