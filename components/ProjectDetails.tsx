@@ -35,7 +35,7 @@ import * as FileSystem from "expo-file-system";
 import { axiosBaseUrl } from "../constants/AxiosBaseUrl";
 import { useToast } from "react-native-paper-toast";
 
-export default function ProjectTile({
+export default function ProjectDetails({
   setUsername,
   setPassword,
   username,

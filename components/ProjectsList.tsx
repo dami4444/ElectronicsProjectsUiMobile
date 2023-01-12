@@ -1,20 +1,15 @@
 import axios from "axios";
 import * as WebBrowser from "expo-web-browser";
 import React, { useEffect, useState } from "react";
-import {
-  ActivityIndicator,
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-} from "react-native";
+import { ActivityIndicator, ScrollView, StyleSheet } from "react-native";
 import { Portal } from "react-native-paper";
 import { useToast } from "react-native-paper-toast";
 import { axiosBaseUrl } from "../constants/AxiosBaseUrl";
 
-import Colors from "../constants/Colors";
 import { RefetchProjectsProps } from "../navigation";
 import { RootTabScreenProps } from "../types";
 import { AuthProps } from "./LogIn";
+import { SortByValues, SortProps } from "./ProjectsListSort";
 import ProjectTile from "./ProjectTile";
 import { Text, View } from "./Themed";
 
@@ -37,8 +32,12 @@ export default function ProjectsList({
   refetchProjects,
   setRefetchProjects,
   navigation,
-}: AuthProps & RefetchProjectsProps & RootTabScreenProps<"TabOne">) {
+  sortProps,
+}: { sortProps: SortProps } & AuthProps &
+  RefetchProjectsProps &
+  RootTabScreenProps<"TabOne">) {
   const [projects, setProjects] = useState<ProjectData[]>([]);
+  const [sortedProjects, setSortedProjects] = useState<ProjectData[]>([]);
 
   const toaster = useToast();
 
@@ -48,10 +47,10 @@ export default function ProjectsList({
         .get<ProjectData[]>(axiosBaseUrl + "projects")
         .then(function (response) {
           setProjects(response.data);
+          setSortedProjects(response.data);
           setRefetchProjects(false);
         })
         .catch(function (error) {
-          console.log(error);
           toaster.show({
             message: error.message || "Bład pobierania listy projektów.",
             type: "error",
@@ -59,6 +58,32 @@ export default function ProjectsList({
         });
     }
   }, [refetchProjects]);
+
+  const compareObjectArrayBySortByProp = (a: ProjectData, b: ProjectData) => {
+    if (!sortProps.sortBy || !sortProps.orderBy) return 0;
+
+    const compareAtoB = a[sortProps.sortBy]
+      .toString()
+      .localeCompare(b[sortProps.sortBy].toString(), "pl", { numeric: true });
+
+    if (sortProps.orderBy === "asc") return compareAtoB;
+
+    return compareAtoB * -1;
+  };
+
+  useEffect(() => {
+    if (sortProps.sortBy) {
+      const projectsCopy: ProjectData[] = JSON.parse(JSON.stringify(projects));
+      setSortedProjects(projectsCopy.sort(compareObjectArrayBySortByProp));
+      console.log(
+        "projects",
+        projects,
+        "sortedProjects",
+        sortedProjects,
+        projectsCopy
+      );
+    }
+  }, [sortProps]);
 
   return (
     <View>
@@ -72,7 +97,7 @@ export default function ProjectsList({
           {refetchProjects ? (
             <ActivityIndicator animating={true} />
           ) : (
-            projects.map((project) => (
+            sortedProjects.map((project) => (
               <ProjectTile
                 navigation={navigation}
                 key={project.id}
