@@ -43,7 +43,8 @@ export default function ProjectDetails({
   refetchProjects,
   setRefetchProjects,
   projectId,
-}: AuthProps & RefetchProjectsProps & { projectId: number }) {
+  navigation,
+}: AuthProps & RefetchProjectsProps & { projectId: number; navigation: any }) {
   const [project, setProject] = useState<ProjectData | undefined>(undefined);
   const [file, setFile] = useState<any>(undefined);
 
@@ -66,7 +67,11 @@ export default function ProjectDetails({
             type: "error",
           });
         });
+    }
+  }, [refetchProjects]);
 
+  useEffect(() => {
+    if (project?.id) {
       axios
         .get(axiosBaseUrl + `file/${projectId}`)
         .then(function (response) {
@@ -79,33 +84,10 @@ export default function ProjectDetails({
           });
         });
     }
-  }, [refetchProjects]);
+  }, [project?.id]);
 
   const openFile = async () => {
     await Linking.openURL(axiosBaseUrl + `file/${projectId}`);
-  };
-
-  const OpenURLButton = ({
-    url,
-    children,
-  }: {
-    url: string;
-    children: ReactNode;
-  }) => {
-    const handlePress = useCallback(async () => {
-      // Checking if the link is supported for links with custom URL scheme.
-      const supported = await Linking.canOpenURL(url);
-
-      if (supported) {
-        // Opening the link with some app, if the URL scheme is "http" the web link should be opened
-        // by some browser in the mobile
-        await Linking.openURL(url);
-      } else {
-        Alert.alert(`Nieprawidłowy URL: ${url}`);
-      }
-    }, [url]);
-
-    return <Button onPress={handlePress}>{children}</Button>;
   };
 
   if (refetchProjects) {
@@ -150,16 +132,6 @@ export default function ProjectDetails({
           Nazwa pliku:{" "}
           <Text variant="bodyLarge">{project.internal_filename}</Text>
         </Text>
-        {/* {project.files_link && (
-          <Text style={styles.textLine} variant="labelLarge">
-            Link do plików:{" "}
-            <Text variant="bodyLarge">{project.files_link}</Text>
-            {OpenURLButton({
-              url: project.files_link,
-              children: project.files_link,
-            })}
-          </Text>
-        )} */}
 
         <Text variant="labelSmall">
           {project.is_diploma ? "Projekt dyplomowy" : ""}
@@ -167,6 +139,8 @@ export default function ProjectDetails({
       </Card.Content>
       <Card.Actions>
         <DeleteProject
+          isInProjectDetails
+          navigation={navigation}
           project={project}
           username={username}
           password={password}

@@ -20,10 +20,12 @@ export default function ProjectScreen({
   setRefetchProjects,
   project,
   route,
+  navigation,
 }: AuthProps &
   RefetchProjectsProps & {
     project: ProjectData;
     route: RouteProp<RootStackParamList, "Szczegóły Projektu">;
+    navigation: any;
   }) {
   const { projectId } = route.params;
 
@@ -36,6 +38,7 @@ export default function ProjectScreen({
         darkColor="rgba(255,255,255,0.1)"
       />
       <ProjectDetails
+        navigation={navigation}
         username={username}
         password={password}
         setUsername={setUsername}

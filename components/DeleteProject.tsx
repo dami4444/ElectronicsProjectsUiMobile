@@ -21,8 +21,12 @@ export default function DeleteProject({
   password,
   refetchProjects,
   setRefetchProjects,
+  navigation,
+  isInProjectDetails,
 }: {
   project: ProjectData;
+  navigation?: any;
+  isInProjectDetails?: boolean;
 } & AuthProps &
   RefetchProjectsProps) {
   // const USERNAME = "fesz";
@@ -49,6 +53,10 @@ export default function DeleteProject({
           message: `Usunięto projekt ${project.title}.`,
           type: "success",
         });
+
+        if (isInProjectDetails && navigation.navigate) {
+          navigation.navigate("TabOne");
+        }
       })
       .catch(function (error) {
         toaster.show({
@@ -94,12 +102,6 @@ export default function DeleteProject({
       </Portal>
       <Button onPress={showModal}>Usuń</Button>
     </>
-  );
-}
-
-function handleHelpPress() {
-  WebBrowser.openBrowserAsync(
-    "https://docs.expo.io/get-started/create-a-new-app/#opening-the-app-on-your-phonetablet"
   );
 }
 

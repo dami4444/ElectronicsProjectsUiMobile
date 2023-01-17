@@ -178,7 +178,7 @@ export default function LogIn({
                 onChangeText={(text) => setTypedPassword(text)}
               />
             </View>
-            <View style={styles.button}>
+            <View style={styles.longTextButton}>
               <Button onPress={handleReauth}>Zmień dane logowania</Button>
             </View>
           </>
@@ -229,6 +229,11 @@ const styles = StyleSheet.create({
   button: {
     margin: 4,
     width: "50%",
-    marginLeft: "25%",
+    minWidth: 100,
+    marginHorizontal: "auto",
+  },
+  longTextButton: {
+    width: "min-content",
+    margin: "auto",
   },
 });

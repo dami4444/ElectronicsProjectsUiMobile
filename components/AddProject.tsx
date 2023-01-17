@@ -167,7 +167,7 @@ export default function AddProject({
 
         <View style={styles.filePicker}>
           <Button
-            style={styles.button}
+            style={styles.longTextButton}
             onPress={pickFile}
             // color="#841584"
           >
@@ -244,9 +244,16 @@ const styles = StyleSheet.create({
   filePicker: {
     marginTop: 0,
   },
+
   button: {
+    margin: 4,
     width: "50%",
-    marginLeft: "25%",
+    minWidth: 100,
+    marginHorizontal: "auto",
+  },
+  longTextButton: {
+    width: "min-content",
+    margin: "auto",
   },
 
   helpContainer: {
