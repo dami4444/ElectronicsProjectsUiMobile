@@ -132,6 +132,7 @@ export default function LogIn({
             >
               <TextInput
                 label="Hasło"
+                secureTextEntry
                 // ref={categoryRef}
                 onChangeText={(text) => setTypedPassword(text)}
               />
@@ -175,6 +176,7 @@ export default function LogIn({
             >
               <TextInput
                 label="Hasło"
+                secureTextEntry
                 onChangeText={(text) => setTypedPassword(text)}
               />
             </View>
