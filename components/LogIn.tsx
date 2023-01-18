@@ -232,10 +232,11 @@ const styles = StyleSheet.create({
     margin: 4,
     width: "50%",
     minWidth: 100,
-    marginHorizontal: "auto",
+    marginHorizontal: "25%",
   },
   longTextButton: {
-    width: "min-content",
-    margin: "auto",
+    minWidth: 150,
+    width: "50%",
+    marginHorizontal: "25%",
   },
 });
