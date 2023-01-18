@@ -5,11 +5,13 @@ Instalacja na Android:
 2. Zezwolić na instalowanie aplikacji pobranych z nieznanych źródeł.
 3. Otworzyć plik apk i zainstalować aplikacje.
 
+
 Instalacja w projektu w trybie do edycji:
 1. Pobrać kopie repozytorium na dysk lokalny.
 2. Upewnić się że node.js jest zainstalowany komendą `node -v` i zainstalować jeśli nie jest https://nodejs.org/en/download/ 
 3. `npm install -g yarn`
 4. `yarn install`
 5. `yarn start`
+
 
 Ze względu na opłaty związane z publikowaniem aplikacji na sklepach google oraz apple aplikacji nie jest opublikowana.
