@@ -12,6 +12,7 @@ Instalacja projektu w trybie do edycji:
 3. `npm install -g yarn`
 4. `yarn install`
 5. `yarn start`
+6. Przyciskiem `w` możemy otworzyć projekt w przeglądarce. Aby otworzyć go na emulatorze anroida można użyć `a` jeśli mamy android studio. Aby uruchomić projekt na telefonie należy pobrać aplikacje expo i zeskanaować kod QR wyświetlany w konsoli.
 
 
 Ze względu na opłaty związane z publikowaniem aplikacji na sklepach google oraz apple aplikacji nie jest opublikowana.
