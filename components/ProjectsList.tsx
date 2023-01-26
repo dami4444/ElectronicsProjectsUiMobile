@@ -1,17 +1,15 @@
 import axios from "axios";
-import * as WebBrowser from "expo-web-browser";
 import React, { useEffect, useState } from "react";
 import { ActivityIndicator, ScrollView, StyleSheet } from "react-native";
-import { Portal } from "react-native-paper";
 import { useToast } from "react-native-paper-toast";
 import { axiosBaseUrl } from "../constants/AxiosBaseUrl";
 
 import { RefetchProjectsProps } from "../navigation";
 import { RootTabScreenProps } from "../types";
 import { AuthProps } from "./LogIn";
-import { SortByValues, SortProps } from "./ProjectsListSort";
+import { SortProps } from "./ProjectsListSort";
 import ProjectTile from "./ProjectTile";
-import { Text, View } from "./Themed";
+import { View } from "./Themed";
 
 export type ProjectData = {
   id: number;
@@ -75,13 +73,6 @@ export default function ProjectsList({
     if (sortProps.sortBy) {
       const projectsCopy: ProjectData[] = JSON.parse(JSON.stringify(projects));
       setSortedProjects(projectsCopy.sort(compareObjectArrayBySortByProp));
-      console.log(
-        "projects",
-        projects,
-        "sortedProjects",
-        sortedProjects,
-        projectsCopy
-      );
     }
   }, [sortProps]);
 
@@ -117,29 +108,10 @@ export default function ProjectsList({
   );
 }
 
-function handleHelpPress() {
-  WebBrowser.openBrowserAsync(
-    "https://docs.expo.io/get-started/create-a-new-app/#opening-the-app-on-your-phonetablet"
-  );
-}
-
 const styles = StyleSheet.create({
   getStartedContainer: {
     alignItems: "center",
     marginHorizontal: 50,
-  },
-
-  getStartedText: {
-    fontSize: 17,
-    lineHeight: 24,
-    textAlign: "center",
-  },
-
-  helpLink: {
-    paddingVertical: 15,
-  },
-  helpLinkText: {
-    textAlign: "center",
   },
   projectsList: {
     height: 550,

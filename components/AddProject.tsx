@@ -1,11 +1,7 @@
 import axios from "axios";
-import * as WebBrowser from "expo-web-browser";
 import React, { useRef, useState } from "react";
 import { Platform, StyleSheet } from "react-native";
 import * as DocumentPicker from "expo-document-picker";
-
-import Colors from "../constants/Colors";
-import { MonoText } from "./StyledText";
 import { Text, View } from "./Themed";
 import { AuthProps } from "./LogIn";
 import { RefetchProjectsProps } from "../navigation";
@@ -14,11 +10,8 @@ import { axiosBaseUrl } from "../constants/AxiosBaseUrl";
 import { useToast } from "react-native-paper-toast";
 
 export default function AddProject({
-  setUsername,
-  setPassword,
   username,
   password,
-  refetchProjects,
   setRefetchProjects,
 }: AuthProps & RefetchProjectsProps) {
   const titleRef = useRef(null);
@@ -26,7 +19,6 @@ export default function AddProject({
   const dateRef = useRef(null);
   const isDiplomaRef = useRef(null);
   const categoryRef = useRef(null);
-  // const linkRef = useRef(null);
 
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
@@ -34,7 +26,6 @@ export default function AddProject({
   const [isDiploma, setIsDiploma] = useState(false);
   const toggleIsDiploma = () => setIsDiploma((previousState) => !previousState);
   const [category, setCategory] = useState("");
-  // const [link, setLink] = useState("");
 
   const [file, setFile] = useState<DocumentPicker.DocumentResult | null>(null);
   const pickFile = async () => {
@@ -55,7 +46,6 @@ export default function AddProject({
       academic_year: date,
       is_diploma: isDiploma,
       category: category,
-      // files_names: linkRef,
     };
 
     const formData = new FormData();
@@ -148,13 +138,6 @@ export default function AddProject({
           onChangeText={(text) => setCategory(text)}
         />
 
-        {/* <TextInput
-          style={styles.textInputView}
-          label="Link do plików"
-          ref={linkRef}
-          onChangeText={(text) => setLink(text)}
-        /> */}
-
         <View style={styles.formLineSwitch}>
           <Text>Projekt dyplomowy:</Text>
           <Switch
@@ -187,19 +170,11 @@ export default function AddProject({
           mode="contained"
           onPress={handleFormSubmit}
           color="#841584"
-          // accessibilityLabel="Learn more about this purple button"
         >
           Dodaj Projekt
         </Button>
       </View>
-      {/* </form> */}
     </View>
-  );
-}
-
-function handleHelpPress() {
-  WebBrowser.openBrowserAsync(
-    "https://docs.expo.io/get-started/create-a-new-app/#opening-the-app-on-your-phonetablet"
   );
 }
 
@@ -216,13 +191,6 @@ const styles = StyleSheet.create({
   getStartedContainer: {
     alignItems: "center",
     marginHorizontal: 50,
-  },
-  homeScreenFilename: {
-    marginVertical: 7,
-  },
-  codeHighlightContainer: {
-    borderRadius: 3,
-    paddingHorizontal: 4,
   },
 
   fileName: {
@@ -256,17 +224,5 @@ const styles = StyleSheet.create({
     width: "50%",
     margin: "auto",
     marginHorizontal: "25%",
-  },
-
-  helpContainer: {
-    marginTop: 15,
-    marginHorizontal: 20,
-    alignItems: "center",
-  },
-  helpLink: {
-    paddingVertical: 15,
-  },
-  helpLinkText: {
-    textAlign: "center",
   },
 });

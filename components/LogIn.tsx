@@ -1,15 +1,12 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-import * as WebBrowser from "expo-web-browser";
 import React, { useState } from "react";
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet } from "react-native";
 import { Button, TextInput } from "react-native-paper";
 import { useToast } from "react-native-paper-toast";
 import { axiosBaseUrl } from "../constants/AxiosBaseUrl";
 
-import Colors from "../constants/Colors";
 import { passwordStorageKey, usernameStorageKey } from "../navigation";
-import { MonoText } from "./StyledText";
 import { Text, View } from "./Themed";
 
 export type AuthProps = {
@@ -64,7 +61,6 @@ export default function LogIn({
           message: error.message || "Bład podczas logowania.",
           type: "error",
         });
-        //TODO: Add toast with error
       });
   };
 
@@ -212,17 +208,6 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     fontSize: 17,
     lineHeight: 24,
-    textAlign: "center",
-  },
-  helpContainer: {
-    marginTop: 15,
-    marginHorizontal: 20,
-    alignItems: "center",
-  },
-  helpLink: {
-    paddingVertical: 15,
-  },
-  helpLinkText: {
     textAlign: "center",
   },
   textInputView: {
