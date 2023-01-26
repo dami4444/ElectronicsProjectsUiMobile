@@ -15,4 +15,4 @@ Instalacja projektu w trybie do edycji:
 6. Przyciskiem `w` możemy otworzyć projekt w przeglądarce. Aby otworzyć go na emulatorze anroida można użyć `a` jeśli mamy android studio. Aby uruchomić projekt na telefonie należy pobrać aplikacje expo i zeskanaować kod QR wyświetlany w konsoli.
 
 
-Ze względu na opłaty związane z publikowaniem aplikacji na sklepach google oraz apple aplikacji nie jest opublikowana.
+Ze względu na opłaty związane z publikowaniem aplikacji na sklepach google oraz apple aplikacjia nie jest opublikowana.
